@@ -27,7 +27,7 @@ RUN chown -R mongodb:mongodb /data/db /data/configdb
 WORKDIR /root/project
 
 # Add project files
-ADD milestone1 /root/project/milestone1
+ADD backend /root/project/backend
 ADD run.sh /root/project/run.sh
 
 RUN chmod +x /root/project/run.sh

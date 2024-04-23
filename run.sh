@@ -2,7 +2,7 @@
 
 mongod --bind_ip_all &
 
-cd ./milestone1
+cd ./backend
 
 mvn package
 
