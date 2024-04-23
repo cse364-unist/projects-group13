@@ -10,7 +10,7 @@ git config --global commit.template .gitmessage.txt
 
 ## How to excute?
 
-1. Download the zip file from this repository, and go to the `assignment1` folder.
+1. Download the zip file from this repository.
 2. In there, type this:
    ```bash
    docker build -t (your custom name) . 
@@ -26,10 +26,6 @@ git config --global commit.template .gitmessage.txt
    root@(containerId):~/project#
    ```
 6. Enter `sh run.sh` or `bash run.sh` and wait until you see this:
-   ```
-    part2 Database has been loaded.
-   ```
-   or this.
    ```
    Movies Database has been loaded.
    ```
