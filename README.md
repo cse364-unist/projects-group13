@@ -8,6 +8,13 @@ Checkout _Git Template_ first. If you downloaded this repository on your local, 
 git config --global commit.template .gitmessage.txt
 ```
 
+> **IMPORTANT!!!!**
+> 
+> Divide branch for each work!!!
+> 
+> - feature1: @sean113x
+> - feature-3: @queso-gato1355
+
 ## How to excute?
 
 1. Download the zip file from this repository.
