@@ -47,6 +47,7 @@ public class GenreRate extends RepresentationModel<GenreRate> {
         this.frequency = frequency;
     }
 
+    @SuppressWarnings("null")
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

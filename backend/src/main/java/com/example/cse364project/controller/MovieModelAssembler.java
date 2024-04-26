@@ -10,6 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @Component
 public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<Movie>> {
 
+    @SuppressWarnings("null")
     @Override
     public EntityModel<Movie> toModel(Movie movie) {
         return EntityModel.of(movie,
