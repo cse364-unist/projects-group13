@@ -34,20 +34,6 @@ public class LTAMovieController {
     public ResponseEntity<CollectionModel<GenreRate>> getGenreCombinationsWithAverageRatings(@PathVariable int year) {
         List<GenreRate> genreRates = ltaMovieService.getGenreCombinationsWithAverageRatings(year);
 
-        log.info("size: " + genreRates.size());
-        if (genreRates.size() != 0) {
-            for(GenreRate genre: genreRates) {
-                log.info(genre.toString());
-            }
-        }
-    
-        for (GenreRate genreRate : genreRates) {
-            Link selfLink = linkTo(methodOn(LTAMovieController.class)
-                    .getGenreCombinationsWithAverageRatings(year))
-                    .withSelfRel();
-            genreRate.add(selfLink);
-        }
-    
         Link link = linkTo(methodOn(LTAMovieController.class)
                 .getGenreCombinationsWithAverageRatings(year))
                 .withSelfRel();

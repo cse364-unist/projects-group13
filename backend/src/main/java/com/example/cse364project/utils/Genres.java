@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 public class Genres {
     private List<String> genres;
 
@@ -46,7 +45,7 @@ public class Genres {
         Collections.sort(this.genres);
     }
 
-    public String indexOf(int i) {
+    public String get(int i) {
         return genres.get(i);
     }
 
@@ -57,11 +56,11 @@ public class Genres {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof Genres)) return false;
         Genres inputGenres = (Genres) o;
         if (this.size() != inputGenres.size()) return false;
         for(int i = 0; i < this.size(); i++) {
-            if (this.indexOf(i).equals(inputGenres.indexOf(i))) return false;
+            if (!Objects.equals(this.get(i), inputGenres.get(i))) return false;
         }
         return true;
     }
@@ -73,7 +72,7 @@ public class Genres {
 
     @Override
     public String toString() {
-        String k = "{";
+        String k = "hash " + hashCode() + ": {";
         for (String g : genres) {
             k += g + ", ";
         }
