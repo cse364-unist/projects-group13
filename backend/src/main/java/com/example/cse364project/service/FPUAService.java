@@ -38,6 +38,14 @@ public class FPUAService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Finds and returns the top five "highest rated movies" in the specified genres.
+     * After searching the database for movies that fit the genre,
+     * we average the ratings for each movie and select the movies with the highest ratings.
+     *
+     * @param `genres` List of genres of the movie you want to search
+     * @return `details` A list containing detailed information(includes "users") of the top 5 movies with the highest ratings
+     */
     public List<MovieDetail> findTopRatedMoviesByGenre(List<String> genres) {
         log.info("Finding movies with genres: {}", genres);
         // 1. Find movies that match the genre criteria
@@ -87,6 +95,14 @@ public class FPUAService {
         return details;
     }
 
+    /**
+     * Finds and returns the top five "lowest rated movies" in the specified genres.
+     * After searching the database for movies that fit the genre,
+     * we average the ratings for each movie and select the movies with the lowest ratings.
+     *
+     * @param `genres` List of genres of the movie you want to search
+     * @return `details` A list containing detailed information(includes "users") of the lowest 5 movies with the highest ratings
+     */
     public List<MovieDetail> findLowestRatedMoviesByGenre(List<String> genres) {
         log.info("Finding movies with genres: {}", genres);
         // 1. Find movies that match the genre criteria
@@ -136,6 +152,13 @@ public class FPUAService {
         return details;
     }
 
+    /**
+     * This class contains average rating information for movies.
+     * Stores each movie ID and the average rating for that movie.
+     *
+     * @param `movieId` Unique ID of the movie
+     * @param `averageRating` Average rating of the movie
+     */
     public static class MovieAverage {
 
         @Field("_id")
@@ -169,6 +192,14 @@ public class FPUAService {
         }
     }
 
+    /**
+     * This class contains detailed information about the movie.
+     * Includes basic information about the movie, average rating, and a list of users who rated the movie.
+     *
+     * @param `movie` movie information
+     * @param `averageRating` Average rating of the movie
+     * @param `users` List of users who rated the movie
+     */
     public static class MovieDetail {
         private Movie movie;
         private double averageRating;
