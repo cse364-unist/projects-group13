@@ -47,8 +47,6 @@ public class RatingController {
     }
 
     // No all method: Responsing time problem
-
-    @SuppressWarnings("null")
     @GetMapping("/{rating}")
     public ResponseEntity<CollectionModel<EntityModel<Movie>>> getMoviesWithRating(@PathVariable int rating,
             @RequestParam(required = false) List<String> genre,
@@ -81,7 +79,6 @@ public class RatingController {
         return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 
-    @SuppressWarnings("null")
     @PostMapping
     public ResponseEntity<?> addRating(@RequestBody Rating rating) {
         EntityModel<Rating> ratingModel = ratingModelAssembler.toModel(ratingService.addRating(rating));
@@ -90,7 +87,6 @@ public class RatingController {
                 .body(ratingModel);
     }
 
-    @SuppressWarnings("null")
     @PutMapping("/id/{id}")
     public ResponseEntity<?> updateRating(@PathVariable String id, @RequestBody Rating rating) {
         EntityModel<Rating> ratingModel = ratingModelAssembler.toModel(ratingService.updateRating(id, rating));

@@ -22,7 +22,6 @@ public class RatingService {
         this.movieratingRepository = movieratingRepository;
     }
 
-    @SuppressWarnings("null")
     public Rating getRatingById(String id) {
         Optional<Rating> rating = ratingRepository.findById(id);
         return rating.orElseThrow(() -> new RatingNotFoundException("Cannot find any with id " + id + "."));

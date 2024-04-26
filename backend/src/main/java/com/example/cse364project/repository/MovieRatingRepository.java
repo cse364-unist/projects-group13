@@ -38,7 +38,6 @@ public class MovieRatingRepository {
         List<Movie> movies = new ArrayList<>();
         for (MovieRate ratingAverage : result.getMappedResults()) {
             String movieId = ratingAverage.getMovieId();
-            @SuppressWarnings("null")
             Optional<Movie> opMovie = movieRepository.findById(movieId);
             if (opMovie.isPresent()) movies.add(opMovie.get());
         }
@@ -91,5 +90,18 @@ public class MovieRatingRepository {
             }
         }
         return movies_with_genres_and_year;
+    }
+
+    public List<MovieRate> findMoviesWithAverageRatingByYear(int year) {
+        Aggregation aggregation = Aggregation.newAggregation(
+        Aggregation.lookup("movies", "movieId", "_id", "movie"),
+        Aggregation.unwind("movie"),
+        Aggregation.match(Criteria.where("movie.year").is(year)),
+        Aggregation.group("movieId")
+                   .avg("rate").as("averageRating")
+    );
+
+        AggregationResults<MovieRate> result = mongoTemplate.aggregate(aggregation, "ratings", MovieRate.class);
+        return result.getMappedResults();
     }
 }

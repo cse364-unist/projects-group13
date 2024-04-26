@@ -10,7 +10,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @Component
 public class RatingModelAssembler implements RepresentationModelAssembler<Rating, EntityModel<Rating>> {
 
-    @SuppressWarnings("null")
     @Override
     public EntityModel<Rating> toModel(Rating rating) {
         return EntityModel.of(rating,

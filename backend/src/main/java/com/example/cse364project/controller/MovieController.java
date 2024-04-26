@@ -25,7 +25,6 @@ public class MovieController {
         this.movieModelAssembler = movieModelAssembler;
     }
 
-    @SuppressWarnings("null")
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<Movie>>> getMovies(
             @RequestParam(required = false) Integer year,
@@ -50,7 +49,6 @@ public class MovieController {
         return ResponseEntity.ok(movieModelAssembler.toModel(movie));
     }
 
-    @SuppressWarnings("null")
     @PostMapping
     public ResponseEntity<EntityModel<Movie>> addMovie(@RequestBody Movie movie) {
         Movie newMovie = movieService.addMovie(movie);
