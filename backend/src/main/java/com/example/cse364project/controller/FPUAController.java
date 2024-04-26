@@ -18,4 +18,9 @@ public class FPUAController {
     public List<MovieDetail> getTopRatedMoviesByGenre(@RequestParam List<String> genres) {
         return fPUAService.findTopRatedMoviesByGenre(genres);
     }
+
+    @GetMapping("/lowest-rated")
+    public List<MovieDetail> getLowestRatedMoviesByGenre(@RequestParam List<String> genres) {
+        return fPUAService.findLowestRatedMoviesByGenre(genres);
+    }
 }

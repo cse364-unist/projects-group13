@@ -47,7 +47,6 @@ public class FPUAService {
                 Aggregation.lookup("ratings", "id", "movieId", "ratings")
         );
 
-        // Extract movie IDs
         AggregationResults<Movie> movies = mongoTemplate.aggregate(findMovies, "movies", Movie.class);
         List<String> movieIds = movies.getMappedResults().stream()
                 .map(Movie::getId)
@@ -59,7 +58,7 @@ public class FPUAService {
         Criteria ratingCriteria = Criteria.where("movieId").in(movieIds);
         Aggregation ratingAggregation = Aggregation.newAggregation(
                 Aggregation.match(ratingCriteria),
-                Aggregation.group("movieId")  // 이 부분에서 "movieId"를 그룹화의 키로 사용
+                Aggregation.group("movieId")
                         .avg("rate").as("averageRating"),
                 Aggregation.sort(Sort.by(Sort.Direction.DESC, "averageRating")),
                 Aggregation.limit(5)
@@ -73,11 +72,60 @@ public class FPUAService {
         for (MovieAverage ma : topMovies.getMappedResults()) {
             Movie movie = movieRepository.findById(ma.getMovieId()).orElse(null);
             Optional<List<Rating>> optionalRatings = ratingRepository.findByMovieId(ma.getMovieId());
-            List<Rating> ratings = optionalRatings.orElse(Collections.emptyList());  // Optional에서 List<Rating> 추출
+            List<Rating> ratings = optionalRatings.orElse(Collections.emptyList());
 
             List<User> users = ratings.stream()
                     .map(rating -> userRepository.findById(rating.getUserId()).orElse(null))
-                    .filter(Objects::nonNull) // null인 사용자를 제거
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            details.add(new MovieDetail(movie, ma.getAverageRating(), users));
+        }
+
+        log.info("Final movie details: {}", details);
+
+
+        return details;
+    }
+
+    public List<MovieDetail> findLowestRatedMoviesByGenre(List<String> genres) {
+        log.info("Finding movies with genres: {}", genres);
+        // 1. Find movies that match the genre criteria
+        Criteria criteria = Criteria.where("genres").all(genres);
+        Aggregation findMovies = Aggregation.newAggregation(
+                Aggregation.match(criteria),
+                Aggregation.lookup("ratings", "id", "movieId", "ratings")
+        );
+
+        AggregationResults<Movie> movies = mongoTemplate.aggregate(findMovies, "movies", Movie.class);
+        List<String> movieIds = movies.getMappedResults().stream()
+                .map(Movie::getId)
+                .collect(Collectors.toList());
+
+        log.info("Movies found: {}", movies.getMappedResults());
+
+        // 2. Calculate average ratings for these movies
+        Criteria ratingCriteria = Criteria.where("movieId").in(movieIds);
+        Aggregation ratingAggregation = Aggregation.newAggregation(
+                Aggregation.match(ratingCriteria),
+                Aggregation.group("movieId")
+                        .avg("rate").as("averageRating"),
+                Aggregation.sort(Sort.by(Sort.Direction.ASC, "averageRating")),
+                Aggregation.limit(5)
+        );
+        AggregationResults<MovieAverage> lowestMovies = mongoTemplate.aggregate(ratingAggregation, "ratings", MovieAverage.class);
+
+        log.info("Lowest movies: {}", lowestMovies.getMappedResults());
+
+        // 3. Collect lowest 5 movies with details
+        List<MovieDetail> details = new ArrayList<>();
+        for (MovieAverage ma : lowestMovies.getMappedResults()) {
+            Movie movie = movieRepository.findById(ma.getMovieId()).orElse(null);
+            Optional<List<Rating>> optionalRatings = ratingRepository.findByMovieId(ma.getMovieId());
+            List<Rating> ratings = optionalRatings.orElse(Collections.emptyList());
+
+            List<User> users = ratings.stream()
+                    .map(rating -> userRepository.findById(rating.getUserId()).orElse(null))
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
             details.add(new MovieDetail(movie, ma.getAverageRating(), users));
         }
@@ -90,7 +138,7 @@ public class FPUAService {
 
     public static class MovieAverage {
 
-        @Field("_id")  // MongoDB 결과의 _id 필드를 movieId 필드에 매핑
+        @Field("_id")
         private String movieId;
         private double averageRating;
 
