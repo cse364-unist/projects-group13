@@ -14,25 +14,8 @@
 2. [How To Execute?](#how-to-excute)
 3. [API Explain](#api-explain)
    1. [Movie](#movie)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [All Movies](#all-movies)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [Movie](#movie)
-      - ![](https://placehold.it/45x15/70c895/000?text=POST) [Add](#add)
-      - ![](https://placehold.it/45x15/efa44a/000?text=PUT) [Update](#update)
-      - ![](https://placehold.it/45x15/e64f47/000?text=DELETE) [Delete](#delete)
    2. [User](#user)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [All Users](#all-users)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [User](#user)
-      - ![](https://placehold.it/45x15/70c895/000?text=POST) [Add](#add-1)
-      - ![](https://placehold.it/45x15/efa44a/000?text=PUT) [Update](#update-1)
-      - ![](https://placehold.it/45x15/e64f47/000?text=DELETE) [Delete](#delete-1)
    3. [Rating](#rating)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [Movies Above Rating](#movies-above-rating)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [Rate](#rate)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [Rate (\w Movie ID)](#rate-w-movie-id)
-      - ![](https://placehold.it/45x15/44a1f8/000?text=GET) [Rate (\w User ID)](#rate-w-user-id)
-      - ![](https://placehold.it/45x15/70c895/000?text=POST) [Add](#add-2)
-      - ![](https://placehold.it/45x15/efa44a/000?text=PUT) [Update](#update-2)
-      - ![](https://placehold.it/45x15/e64f47/000?text=DELETE) [Delete](#delete-2)
 4. [Appendix](#appendix)
    1. [User API Informations](#user-api-informations)
 
@@ -53,33 +36,36 @@ git config --global commit.template .gitmessage.txt
    ```bash
    docker build -t (your custom name) . 
    ```
-   > [!WARNING]
-   > DON'T FORGET THE DOT AT THE END!!
-3. Wait until the build ends.
-4. After the build ended, type this:
+
+> [!WARNING]
+> DON'T FORGET THE DOT AT THE END!!
+   
+4. Wait until the build ends.
+5. After the build ended, type this:
+
    ```bash
    docker run -it (your custom name)
    ```
-5. If it runs succesfully, then this command line should appear.
+6. If it runs succesfully, then this command line should appear.
    ```
    root@(containerId):~/project#
    ```
-6. Enter `sh run.sh` or `bash run.sh` and wait until you see this:
+7. Enter `sh run.sh` or `bash run.sh` and wait until you see this:
    ```
    Movies Database has been loaded.
    ```
-   > [!NOTE]
-   > This takes at least 50 seconds. Wait until all the database loaded. If you call any API before this done, nothing would work.
-7. Open another terminal and type this:
+> [!NOTE]
+> This takes at least 50 seconds. Wait until all the database loaded. If you call any API before this done, nothing would work.
+8. Open another terminal and type this:
    ```
    docker exec -it (your custom name) /bin/bash
    ```
-8. And now you can use `curl`.
+9. And now you can use `curl`.
 
 ## API Explain
 ### Movie
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) All Movies
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> All Movies </span>
 ##### Curl
 ```
 curl -X GET http://localhost:8080/movies{?year, genre}
@@ -96,7 +82,8 @@ For `genre`, you can request like this to get all the movies that has `Animation
 ```curl
 curl -X GET http://localhost:8080/movies?genre=Animation,Action
 ```
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) Movie
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Movie </span>
 ##### Curl
 ```
 curl -X GET http://localhost:8080/movies/{id}
@@ -105,7 +92,7 @@ curl -X GET http://localhost:8080/movies/{id}
 ##### Description
 You can access the specific movie by ID.
 
-#### ![](https://placehold.it/45x15/70c895/000?text=POST) Add
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/post.png" width=45 style="vertical-align: middle;"> Add </span>
 ##### Curl
 ```
 curl -X POST http://localhost:8080/movies -H ‘Content-type:application/json’ -d '{"id": "(movie id)", "title": "(title)", "year": (year), "genres":["Genre1", "Genre2", ...]}'
@@ -128,8 +115,7 @@ curl -X POST http://localhost:8080/movies -H ‘Content-type:application/json’
 ##### Description
 You can request the POST opperation with this body. `year` field should be an integer. If the ID is already exists, PUT opperation is automatically executed.
 
-#### ![](https://placehold.it/45x15/efa44a/000?text=PUT) Update
-
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/put.png" width=45 style="vertical-align: middle;"> Update </span>
 ##### Curl
 ```
 curl -X PUT http://localhost:8080/movies/{id} -H ‘Content-type:application/json’ -d '{"title": "(title)", "year": (year), "genres":["Genre1", "Genre2", ...]}'
@@ -151,7 +137,7 @@ curl -X PUT http://localhost:8080/movies/{id} -H ‘Content-type:application/jso
 ##### Description
 You can request PUT opperation with this body. `year` field should be an integer. If the ID does not exist, error would occur.
 
-#### ![](https://placehold.it/45x15/e64f47/000?text=DELETE) Delete
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/delete.png" width=45 style="vertical-align: middle;"> Delete </span>
 
 ##### Curl
 ```
@@ -168,7 +154,8 @@ You can request DELETE opperation by giving the url with ID.
 
 ### User
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) All Users
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> All Users </span>
 
 ##### Curl
 ```
@@ -185,7 +172,9 @@ curl -X GET http://localhost:8080/users{?gender, age, occupation, postal}
 ##### Description
 You can request GET with and without query parameters. If you don't write query parameters, all user information would be given.
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) User
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> User </span>
+
 ##### Curl
 ```
 curl -X GET http://localhost:8080/users/{id}
@@ -194,7 +183,7 @@ curl -X GET http://localhost:8080/users/{id}
 ##### Description
 You can access the specific user with the ID.
 
-#### ![](https://placehold.it/45x15/70c895/000?text=POST) Add
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/post.png" width=45 style="vertical-align: middle;"> Add </span>
 ##### Curl
 ```
 curl -X POST http://localhost:8080/users -H ‘Content-type:application/json’ -d '{"id": "(user id)", "gender": "(F or M)", "age": (age), "occupation" : (occupation), "postal": "(postal)"}'
@@ -211,9 +200,10 @@ curl -X POST http://localhost:8080/users -H ‘Content-type:application/json’ 
 ```
 
 ##### Description
-You can request POST opperation with this body. If the ID is already exists, PUT opperation is automatically executed.
+You can request POST opperation with this body. If the ID is already exists, PUT opperation is automatically executed. For age and occupation, please checkout [appendix](#appendix).
 
-#### ![](https://placehold.it/45x15/efa44a/000?text=PUT) Update
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/put.png" width=45 style="vertical-align: middle;"> Update </span>
+
 ##### Curl
 ```
 curl -X PUT http://localhost:8080/users/{id} -H ‘Content-type:application/json’ -d '{"gender": "(F or M)", "age": (age), "occupation" : (occupation), "postal": "(postal)"}'
@@ -231,7 +221,9 @@ curl -X PUT http://localhost:8080/users/{id} -H ‘Content-type:application/json
 ##### Description
 You can request PUT opperation with this body. If the ID does not exist, error would occur. 
 
-#### ![](https://placehold.it/45x15/e64f47/000?text=DELETE) Delete
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/delete.png" width=45 style="vertical-align: middle;"> Delete </span>
+
 ##### Curl 
 ```
 curl -X DELETE http://localhost:8080/users/{id}
@@ -249,7 +241,9 @@ You can request DELETE opperation by giving the url with ID.
 > [!NOTE]
 > Rating API does not have an opperation calling all the rating datas due to the responsing time problem.
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) Movies Above Rating
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Movies Above Rating </span>
+
 ##### Curl
 ```
 curl -X GET http://localhost:8080/ratings/{rating}{?year, genre}
@@ -268,7 +262,9 @@ For `genre`, you can request like this to get all the movies that its average ra
 curl -X GET http://localhost:8080/ratings/4?genre=Animation,Action
 ```
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) Rate
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Rate </span>
+
 ##### Curl
 ```
 curl -X GET http://localhost:8080/ratings/id/{id}
@@ -276,7 +272,9 @@ curl -X GET http://localhost:8080/ratings/id/{id}
 ##### Description
 You can request the specific rating entry with ID.
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) Rate (\w Movie ID)
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Rate (\w Movie ID) </span>
+
 ##### Curl
 ```
 curl -X GET http://localhost:8080/ratings/movie/{movieId}
@@ -284,7 +282,9 @@ curl -X GET http://localhost:8080/ratings/movie/{movieId}
 ##### Description
 You can request all the rating entries with movie ID.
 
-#### ![](https://placehold.it/45x15/44a1f8/000?text=GET) Rate (\w User ID)
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Rate (\w User ID) </span>
+
 ##### Curl
 ```
 curl -X GET http://localhost:8080/ratings/user/{userId}
@@ -292,7 +292,9 @@ curl -X GET http://localhost:8080/ratings/user/{userId}
 ##### Description
 You can request all the rating entries with user ID.
 
-#### ![](https://placehold.it/45x15/70c895/000?text=POST) Add
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/post.png" width=45 style="vertical-align: middle;"> Add </span>
+
 ##### Curl
 ```
 curl -X POST http://localhost:8080/ratings -H ‘Content-type:application/json’ -d '{"movieId": "(movie id)", "userId": "(user id)", "rate":(rate), "timestamp":"(timestamp)"}'
@@ -310,7 +312,8 @@ curl -X POST http://localhost:8080/ratings -H ‘Content-type:application/json�
 ##### Description
 You can request POST opperation with this body. `rate` should be an Integer. If the ID is already exists, PUT opperation is automatically executed.
 
-#### ![](https://placehold.it/45x15/efa44a/000?text=PUT) Update
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/put.png" width=45 style="vertical-align: middle;"> Update </span>
+
 ##### Curl
 ```
 curl -X PUT http://localhost:8080/ratings/id/{id} -H ‘Content-type:application/json’ -d '{"movieId": "(movie id)", "userId": "(user id)", "rate":(rate), "timestamp":"(timestamp)"}'
@@ -329,7 +332,8 @@ curl -X PUT http://localhost:8080/ratings/id/{id} -H ‘Content-type:application
 ##### Description
 You can request PUT opperation with this body. `rate` should be an Integer. If the ID does not exist, error would occur. ID is the MongoDB's basic ID. It is not a movie ID nor user ID.
 
-#### ![](https://placehold.it/45x15/e64f47/000?text=DELETE) Delete
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/delete.png" width=45 style="vertical-align: middle;"> Delete </span>
+
 ##### Curl
 ```
 curl -X DELETE http://localhost:8080/ratings/id/{id}
