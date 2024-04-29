@@ -1,7 +1,7 @@
 package com.example.cse364project.controller;
 
 import com.example.cse364project.dto.GenreRate;
-import com.example.cse364project.service.GFAMovieService;
+import com.example.cse364project.service.GFAService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +24,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 /**
  * Controller class for G.F.A. (Genre Frequency Analysis) for Movie.
  */
-public class GFAMovieController {
+public class GFAController {
 
     //private static final Logger log = LoggerFactory.getLogger(GFAMovieController.class);
 
-    private final GFAMovieService gfaMovieService;
+    private final GFAService gfaService;
 
-    public GFAMovieController(GFAMovieService gfaMovieService) {
-        this.gfaMovieService = gfaMovieService;
+    public GFAController(GFAService gfaService) {
+        this.gfaService = gfaService;
     }
 
     @GetMapping
     public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatings() {
-        List<GenreRate> genreRates = gfaMovieService.getGenreFrequencyWithRatings();
+        List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatings();
 
-        Link link = linkTo(methodOn(GFAMovieController.class)
+        Link link = linkTo(methodOn(GFAController.class)
                 .getGenreFrequencyWithRatings())
                 .withSelfRel();
 
@@ -49,9 +49,9 @@ public class GFAMovieController {
 
     @GetMapping("/{genre}")
     public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingGenre(@PathVariable String genre) {
-        List<GenreRate> genreRates = gfaMovieService.getGenreFrequencyWithRatingsIncludingGenre(genre);
+        List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingGenre(genre);
 
-        Link link = linkTo(methodOn(GFAMovieController.class)
+        Link link = linkTo(methodOn(GFAController.class)
                 .getGenreFrequencyWithRatingsIncludingGenre(genre))
                 .withSelfRel();
 
@@ -62,9 +62,9 @@ public class GFAMovieController {
     
     @GetMapping("/{year}")
     public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingYear(@PathVariable int year) {
-        List<GenreRate> genreRates = gfaMovieService.getGenreFrequencyWithRatingsIncludingYear(year);
+        List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingYear(year);
 
-        Link link = linkTo(methodOn(GFAMovieController.class)
+        Link link = linkTo(methodOn(GFAController.class)
                 .getGenreFrequencyWithRatingsIncludingYear(year))
                 .withSelfRel();
     

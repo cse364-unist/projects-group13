@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.cse364project.domain.Actor;
 import com.example.cse364project.domain.ActorRequest;
 import com.example.cse364project.feature2.Recommendator;
-import com.example.cse364project.service.ActorService;
+import com.example.cse364project.service.GBARService;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/gbar")
-public class ActorController {
+public class GBARController {
     
-    private final ActorService actorService;
+    private final GBARService GBARService;
 
-    public ActorController(ActorService actorService) {
-        this.actorService = actorService;
+    public GBARController(GBARService GBARService) {
+        this.GBARService = GBARService;
     }
 
     /**
@@ -38,7 +38,7 @@ public class ActorController {
     @GetMapping("/recommend")
     public ResponseEntity<Actor> getOneActor(@RequestParam("name") String name) {
 
-        return ResponseEntity.ok(actorService.getActorByName(name));
+        return ResponseEntity.ok(GBARService.getActorByName(name));
     }
 
     /**
@@ -63,7 +63,7 @@ public class ActorController {
 
         List<Actor> supporters = new ArrayList<>();
         for (String name : request.getSupporter()) {
-            supporters.add(actorService.getActorByName(name));
+            supporters.add(GBARService.getActorByName(name));
         }
 
         Recommendator recommedator = new Recommendator();
@@ -71,7 +71,7 @@ public class ActorController {
                                                 request.getGenre(),
                                                 supporters,
                                                 request.getPlot(),
-                                                actorService.getAllActor(), 5);
+                                                GBARService.getAllActor(), 5);
         
         return ResponseEntity.ok(result);
     } 

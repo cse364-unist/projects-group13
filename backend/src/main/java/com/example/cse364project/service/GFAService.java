@@ -21,12 +21,12 @@ import com.example.cse364project.dto.MovieRate;
 import com.example.cse364project.exception.MovieNotFoundException;
 
 @Service
-public class GFAMovieService {
+public class GFAService {
     //private static final Logger log = LoggerFactory.getLogger(LTAMovieService.class);
     private final MovieRatingRepository movieRatingRepository;
     private final MovieRepository movieRepository;
 
-    public GFAMovieService(MovieRatingRepository movieRatingRepository, MovieRepository movieRepository) {
+    public GFAService(MovieRatingRepository movieRatingRepository, MovieRepository movieRepository) {
         this.movieRatingRepository = movieRatingRepository;
         this.movieRepository = movieRepository;
     }
