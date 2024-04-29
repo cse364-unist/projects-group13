@@ -22,12 +22,15 @@ public class Recommendator {
      * Recommend some actors that has higher cosine similarity with request
      * Receive a Request domain and list of all actors in DB, and the max size that this recommendator recommands
      *
-     * @param request a Request domain
+     * @param genre vectorized genre that represent movie that want to recommended
+     * @param supporters supporting actors
+     * @param synergy 0 ~ 100 int that represents rate of supporting vector (0 ~ 0.5)
+     * @param plot movie's plot, future task
      * @param actors list of all Actor in DB
      * @param maxSize max size that recommendator recommends
      * @return recommend max size of actors
      */
-    public Set<Actor> recommend(double[] genre, List<Actor> supporters, String plot, List<Actor> actors, int maxSize) {
+    public Set<Actor> recommend(double[] genre, List<Actor> supporters, int synergy, String plot, List<Actor> actors, int maxSize) {
 
         // make a unitvector using genre vector
         RealVector vector = new ArrayRealVector(genre);
@@ -46,8 +49,10 @@ public class Recommendator {
             supportingVector.unitVector();
 
             // percentage of how the suppoter effects to main vector
-            vector.mapMultiply(0.8);
-            supportingVector.mapMultiply(0.2);
+            // synerge : 0~100 int
+            // maximun rate of supporting vector : 0.5 (each vector has same rate)
+            vector.mapMultiply(1-synergy/200);
+            supportingVector.mapMultiply(synergy/200);
 
             // combind main vector and supporting vector
             vector.add(supportingVector);

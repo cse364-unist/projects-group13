@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,7 +60,7 @@ public class GBARController {
      *                  movie plot : used to determine more specefic information of genre
      * @return listup some recommendations of actors that has high similarity with input vector
      */
-    @GetMapping("/recommend")
+    @PostMapping("/recommend")
     public ResponseEntity<Set<Actor>> recommendActor(@RequestBody ActorRequest request) {
 
         List<Actor> supporters = new ArrayList<>();
