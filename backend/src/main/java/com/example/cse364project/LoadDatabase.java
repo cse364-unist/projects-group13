@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -41,7 +42,6 @@ public class LoadDatabase implements CommandLineRunner {
         this.actorRepository = actorRepository;
     }
 
-    @SuppressWarnings("null")
     @Override
     public void run(String... args) throws Exception {
         List<Rating> ratings = readRatings("data/ratings.dat");
@@ -115,6 +115,7 @@ public class LoadDatabase implements CommandLineRunner {
             String[] yearAndNumber = titleYear[titleYear.length - 1].split("\\)");
             int year = Integer.parseInt(yearAndNumber[0].trim());
             List<String> genreList = new ArrayList<>(Arrays.asList(parts[2].split("\\|")));
+            Collections.sort(genreList);
             Movie movie = new Movie(parts[0], title, year, genreList);
             movies.add(movie);
         }

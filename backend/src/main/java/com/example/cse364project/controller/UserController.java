@@ -25,7 +25,6 @@ public class UserController {
         this.userModelAssembler = userModelAssembler;
     }
 
-    @SuppressWarnings("null")
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<User>>> getUsers(
             @RequestParam(required = false) Character gender,
