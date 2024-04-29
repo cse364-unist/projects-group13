@@ -14,14 +14,13 @@ import com.example.cse364project.domain.ActorRequest;
 import com.example.cse364project.feature2.Recommendator;
 import com.example.cse364project.service.ActorService;
 
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 
 @RestController
-@RequestMapping("/feature2")
+@RequestMapping("/gbar")
 public class ActorController {
     
     private final ActorService actorService;
@@ -36,7 +35,7 @@ public class ActorController {
      * @param name name of actor
      * @return return one actor that has same name
      */
-    @GetMapping("/find")
+    @GetMapping("/recommend")
     public ResponseEntity<Actor> getOneActor(@RequestParam("name") String name) {
 
         return ResponseEntity.ok(actorService.getActorByName(name));
@@ -48,7 +47,7 @@ public class ActorController {
      * We will consider supporting actors and movie plot to make a better performance later.
      * 
      * POST request example 
-     * curl -X POST http://localhost:8080/feature2/recommend -H ‘Content-type:application/json’ -d '{ 
+     * curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{ 
      * "genre":[ 27.6, 7.4, 0, 52, 0, 6.6, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
      * "supporter" : ["Robert Hays", "John Belushi"],
      * "plot": "plot is here"
@@ -59,7 +58,7 @@ public class ActorController {
      *                  movie plot : used to determine more specefic information of genre
      * @return listup some recommendations of actors that has high similarity with input vector
      */
-    @PostMapping("/recommend")
+    @GetMapping("/recommend")
     public ResponseEntity<Set<Actor>> recommendActor(@RequestBody ActorRequest request) {
 
         List<Actor> supporters = new ArrayList<>();
