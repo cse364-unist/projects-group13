@@ -207,5 +207,30 @@ public class MovieRatingRepository {
     
         return result.getMappedResults();
     }
+
+    public List<MovieRate> findAllRatings() {
+        Aggregation aggregation = Aggregation.newAggregation(
+            Aggregation.group("movieId").avg("rate").as("averageRating")
+        );
+    
+        AggregationResults<MovieRate> result = mongoTemplate.aggregate(aggregation, "ratings", MovieRate.class);
+    
+        return result.getMappedResults();
+    }
+
+    public List<MovieRate> findMoviesWithAverageRatingByGenre(String genre) {
+        List<String> movieIds = movieRepository.findByGenresContaining(genre).stream()
+                                .map(Movie::getId)
+                                .collect(Collectors.toList());
+
+        Aggregation aggregation = Aggregation.newAggregation(
+            Aggregation.match(Criteria.where("movieId").in(movieIds)),
+            Aggregation.group("movieId").avg("rate").as("averageRating")
+        );
+    
+        AggregationResults<MovieRate> result = mongoTemplate.aggregate(aggregation, "ratings", MovieRate.class);
+    
+        return result.getMappedResults();
+    }
     
 }

@@ -13,5 +13,7 @@ public interface MovieRepository extends MongoRepository<Movie, String> {
     List<Movie> findByYear(int year);
 
     List<Movie> findByGenresContaining(List<String> genres);
+
+    List<Movie> findByGenresContaining(String genre);
     
 }
