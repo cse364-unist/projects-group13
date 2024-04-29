@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class FPUAService {
-    private static final Logger log = LoggerFactory.getLogger(FPUAService.class);
+public class PUAService {
+    private static final Logger log = LoggerFactory.getLogger(PUAService.class);
 
 
     @Autowired

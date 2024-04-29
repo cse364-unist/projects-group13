@@ -11,10 +11,10 @@ import com.example.cse364project.repository.ActorRepository;
 
 
 @Service
-public class ActorService {
+public class GBARService {
     private final ActorRepository actorRepository;
 
-    public ActorService (ActorRepository actorRepository) {
+    public GBARService(ActorRepository actorRepository) {
         this.actorRepository = actorRepository;
     }
 

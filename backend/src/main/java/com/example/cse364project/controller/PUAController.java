@@ -1,7 +1,7 @@
 package com.example.cse364project.controller;
 
-import com.example.cse364project.service.FPUAService;
-import com.example.cse364project.service.FPUAService.MovieDetail;
+import com.example.cse364project.service.PUAService;
+import com.example.cse364project.service.PUAService.MovieDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,10 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/fpua")
-public class FPUAController {
+public class PUAController {
 
     @Autowired
-    private FPUAService fPUAService;
+    private PUAService fPUAService;
 
     /**
      * An API endpoint that returns detailed information about the top five highest-rated movies in the specified genres.
