@@ -18,6 +18,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+
 @RestController
 @RequestMapping("/ltamovie")
 /**
@@ -27,18 +28,44 @@ public class GFAMovieController {
 
     //private static final Logger log = LoggerFactory.getLogger(GFAMovieController.class);
 
-    private final GFAMovieService ltaMovieService;
+    private final GFAMovieService gfaMovieService;
 
-    public GFAMovieController(GFAMovieService ltaMovieService) {
-        this.ltaMovieService = ltaMovieService;
+    public GFAMovieController(GFAMovieService gfaMovieService) {
+        this.gfaMovieService = gfaMovieService;
     }
 
-    @GetMapping("/{year}")
-    public ResponseEntity<CollectionModel<GenreRate>> getGenreCombinationsWithAverageRatings(@PathVariable int year) {
-        List<GenreRate> genreRates = ltaMovieService.getGenreCombinationsWithAverageRatings(year);
+    @GetMapping
+    public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatings() {
+        List<GenreRate> genreRates = gfaMovieService.getGenreFrequencyWithRatings();
 
         Link link = linkTo(methodOn(GFAMovieController.class)
-                .getGenreCombinationsWithAverageRatings(year))
+                .getGenreFrequencyWithRatings())
+                .withSelfRel();
+
+        CollectionModel<GenreRate> collectionModel = CollectionModel.of(genreRates, link);
+
+        return ResponseEntity.ok(collectionModel);
+    }
+
+    @GetMapping("/{genre}")
+    public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingGenre(@PathVariable String genre) {
+        List<GenreRate> genreRates = gfaMovieService.getGenreFrequencyWithRatingsIncludingGenre(genre);
+
+        Link link = linkTo(methodOn(GFAMovieController.class)
+                .getGenreFrequencyWithRatingsIncludingGenre(genre))
+                .withSelfRel();
+
+        CollectionModel<GenreRate> collectionModel = CollectionModel.of(genreRates, link);
+
+        return ResponseEntity.ok(collectionModel);
+    }
+    
+    @GetMapping("/{year}")
+    public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingYear(@PathVariable int year) {
+        List<GenreRate> genreRates = gfaMovieService.getGenreFrequencyWithRatingsIncludingYear(year);
+
+        Link link = linkTo(methodOn(GFAMovieController.class)
+                .getGenreFrequencyWithRatingsIncludingYear(year))
                 .withSelfRel();
     
         CollectionModel<GenreRate> collectionModel = CollectionModel.of(genreRates, link);
