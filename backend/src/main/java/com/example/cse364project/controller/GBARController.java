@@ -35,7 +35,7 @@ public class GBARController {
      * @param name name of actor
      * @return return one actor that has same name
      */
-    @GetMapping("/recommend")
+    @GetMapping("/find")
     public ResponseEntity<Actor> getOneActor(@RequestParam("name") String name) {
 
         return ResponseEntity.ok(GBARService.getActorByName(name));
@@ -49,6 +49,7 @@ public class GBARController {
      * POST request example 
      * curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{ 
      * "genre":[ 27.6, 7.4, 0, 52, 0, 6.6, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+     * "synergy" : 20
      * "supporter" : ["Robert Hays", "John Belushi"],
      * "plot": "plot is here"
      * }''
@@ -70,6 +71,7 @@ public class GBARController {
         Set<Actor> result = recommedator.recommend(
                                                 request.getGenre(),
                                                 supporters,
+                                                request.getSynergy(),
                                                 request.getPlot(),
                                                 GBARService.getAllActor(), 5);
         
