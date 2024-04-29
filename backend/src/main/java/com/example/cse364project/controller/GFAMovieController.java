@@ -20,7 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("/ltamovie")
+@RequestMapping("/gfa")
 /**
  * Controller class for G.F.A. (Genre Frequency Analysis) for Movie.
  */
