@@ -64,4 +64,13 @@ public class MovieService {
         }
         return Collections.emptyList();
     }
+
+    public Movie patchMovie(String id, Movie movie) {
+        Movie patchedMovie = movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException("Could not find ID " + id + "."));
+        if (movie.getGenres() != null) patchedMovie.setGenres(movie.getGenres());
+        if (movie.getTitle() != null) patchedMovie.setTitle(movie.getTitle());
+        if (movie.getYear() != null) patchedMovie.setYear(movie.getYear());
+        return movieRepository.save(patchedMovie);
+    }
 }

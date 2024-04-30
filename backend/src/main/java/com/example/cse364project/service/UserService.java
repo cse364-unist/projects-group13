@@ -58,4 +58,18 @@ public class UserService {
                         + ", age="
                         + age.toString() + ", occupation=" + occupation.toString() + ", postal=" + postal + "."));
     }
+
+    public User patchUser(String id, User user) {
+        User updatedUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Could not find ID" + id + "."));
+        if (user.getAge() != null)
+            updatedUser.setAge(user.getAge());
+        if (user.getGender() != null)
+            updatedUser.setGender(user.getGender());
+        if (user.getOccupation() != null)
+            updatedUser.setOccupation(user.getOccupation());
+        if (user.getPostal() != null)
+            updatedUser.setPostal(user.getPostal());
+        return userRepository.save(updatedUser);
+    }
 }

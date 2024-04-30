@@ -68,4 +68,10 @@ public class MovieController {
         movieService.deleteMovie(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EntityModel<Movie>> patchMovie(@PathVariable String id, @RequestBody Movie movie) {
+        Movie patchedMovie = movieService.patchMovie(id, movie);
+        return ResponseEntity.ok(movieModelAssembler.toModel(patchedMovie));
+    }
 }

@@ -69,4 +69,11 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EntityModel<User>> patchUser(@PathVariable String id, @RequestBody User user) {
+        User patchedUser = userService.patchUser(id, user);
+        return patchedUser != null ? ResponseEntity.ok(userModelAssembler.toModel(patchedUser))
+                : ResponseEntity.notFound().build();
+    }
 }
