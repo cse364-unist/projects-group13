@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fpua")
+@RequestMapping("/pua")
 public class PUAController {
 
     @Autowired
-    private PUAService fPUAService;
+    private PUAService fpuaService;
 
     /**
      * An API endpoint that returns detailed information about the top five highest-rated movies in the specified genres.
@@ -23,7 +23,7 @@ public class PUAController {
      */
     @GetMapping("/top-rated")
     public List<MovieDetail> getTopRatedMoviesByGenre(@RequestParam List<String> genres) {
-        return fPUAService.findTopRatedMoviesByGenre(genres);
+        return fpuaService.findTopRatedMoviesByGenre(genres);
     }
 
     /**
@@ -35,6 +35,6 @@ public class PUAController {
      */
     @GetMapping("/lowest-rated")
     public List<MovieDetail> getLowestRatedMoviesByGenre(@RequestParam List<String> genres) {
-        return fPUAService.findLowestRatedMoviesByGenre(genres);
+        return fpuaService.findLowestRatedMoviesByGenre(genres);
     }
 }

@@ -1,13 +1,5 @@
 # CSE364 Group Project - G.13
 
-> [!IMPORTANT]
-> 
-> **Divide branch for each work!!!**
-> 
-> - feature1: @sean113x
-> - feature2: @sumin1371
-> - feature3: @queso-gato1355
-
 ## Content
 
 1. [Before Staring The Project](#before-starting-the-project)
@@ -16,6 +8,9 @@
    1. [Movie](#movie)
    2. [User](#user)
    3. [Rating](#rating)
+   4. [Feature1: Preferred User Analysis](#-feature-1-preferred-user-analysis)
+   5. [Feature2: Genre-Based Actor Recommendation](#-feature-2-genre-based-actor-recommendation)
+   6. [Feature3: Genre Frequency Analysis](#-feature-3-genre-frequency-analysis)
 4. [Appendix](#appendix)
    1. [User API Informations](#user-api-informations)
 
@@ -39,7 +34,7 @@ git config --global commit.template .gitmessage.txt
 
 > [!WARNING]
 > DON'T FORGET THE DOT AT THE END!!
-   
+
 4. Wait until the build ends.
 5. After the build ended, type this:
 
@@ -148,7 +143,7 @@ curl -X DELETE http://localhost:8080/movies/{id}
 > [!WARNING]
 > This opperation hadn't been tested.
 
-You can request DELETE opperation by giving the url with ID. 
+You can request DELETE opperation by giving the url with ID.
 
 ---
 
@@ -219,12 +214,12 @@ curl -X PUT http://localhost:8080/users/{id} -H ‘Content-type:application/json
 ```
 
 ##### Description
-You can request PUT opperation with this body. If the ID does not exist, error would occur. 
+You can request PUT opperation with this body. If the ID does not exist, error would occur.
 
 
 #### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/delete.png" width=45 style="vertical-align: middle;"> Delete </span>
 
-##### Curl 
+##### Curl
 ```
 curl -X DELETE http://localhost:8080/users/{id}
 ```
@@ -232,7 +227,7 @@ curl -X DELETE http://localhost:8080/users/{id}
 > This opperation hadn't been tested.
 
 ##### Description
-You can request DELETE opperation by giving the url with ID. 
+You can request DELETE opperation by giving the url with ID.
 
 ---
 
@@ -342,7 +337,95 @@ curl -X DELETE http://localhost:8080/ratings/id/{id}
 > This opperation hadn't been tested.
 
 ##### Description
-You can request DELETE opperation by giving the url with ID. 
+You can request DELETE opperation by giving the url with ID.
+
+---
+
+### 🍿 Feature 1: Preferred User Analysis
+
+This feature provides insights into audience preferences by analyzing top-rated and bottom-rated movies within a specified genre.
+It outputs demographic data related to the viewers of these movies, assisting in tailored marketing and content optimization.
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Top-Rated Movies </span>
+
+##### Curl
+```
+curl -X GET http://localhost:8080/pua/top-rated?genre={genre1},{genre2},...
+```
+##### Description
+It returns detailed information about the top five highest-rated movies in the specified genres.
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Lowest-Rated Movies </span>
+
+##### Curl
+```
+curl -X GET http://localhost:8080/pua/lowest-rated?genre={genre1},{genre2},...
+```
+##### Description
+It returns detailed information about the top five lowest-rated movies in the specified genres.
+
+### 🥸 Feature 2: Genre-Based Actor Recommendation
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Find Actor's Information </span>
+##### Curl
+```
+curl -X GET http://localhost:8080/gbar/find?name={name}
+```
+
+##### Description
+It returns some information about received actor.
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Actor Recommendation </span>
+##### Curl
+```
+curl -X GET http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "plot": {movie plot}}'
+```
+
+##### Description
+It returns json formatted recommendation based on given information. Vectorized genre of movie will given, some actors that fit with movie will be returned.
+
+
+### 🖼️ Feature 3: Genre Frequency Analysis
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> All Genre Frequencies </span>
+##### Curl
+```
+curl -X GET http://localhost:8080/gfa
+```
+
+> [!WARNING]
+> This will take a lot of times.
+
+##### Description
+Map data with genre combination, its frequency, and its average ratings will be returned.
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Genre Frequencies by Year </span>
+##### Curl
+```
+curl -X GET http://localhost:8080/gfa/{year}
+```
+
+##### Description
+Map data with genre combination, its frequency, and its average ratings based on the movies screened in `year`. `year` should be an integer value.
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Genre Frequencies by Genre </span>
+##### Curl
+```
+curl -X GET http://localhost:8080/gfa/{genre}
+```
+
+##### Description
+Map data with genre combination, its frequency, and its average ratings which `genre` is included in combination. `genre` should be a `String`.
+
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Genre Frequencies by Year and Genre </span>
+##### Curl
+```
+curl -X GET http://localhost:8080/gfa/{year}/{genre}
+```
+
+##### Description
+Map data with genre combination, its frequency, and its average ratings which `genre` is included in combination based on the movies screened in `year`. `year` should be an integer, and `genre` should be a `String`.
+
 
 ## Appendix
 
