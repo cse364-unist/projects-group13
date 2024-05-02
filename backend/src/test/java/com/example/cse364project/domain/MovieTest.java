@@ -33,7 +33,7 @@ public class MovieTest {
     @Test
     void testEquals() {
         Movie sameMovie = new Movie("1", "Movie Title", 2022, new ArrayList<>(Arrays.asList("Action", "Adventure")));
-        Assertions.assertEquals(movie, sameMovie);
+        Assertions.assertTrue(movie.equals(sameMovie));
     }
 
     @Test

@@ -7,10 +7,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +17,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserModelAssembler userModelAssembler;
 
-    public UserController(UserService userService, UserModelAssembler userModelAssembler) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userModelAssembler = userModelAssembler;
     }
 
     @GetMapping
@@ -33,7 +29,6 @@ public class UserController {
         @RequestParam(required = false) Integer occupation,
         @RequestParam(required = false) String postal) {
 
-        // User (String id, char gender, int age, int occupation, String postal)
         List<User> users;
 
         if (gender != null && age != null && occupation != null && postal != null)
@@ -45,8 +40,8 @@ public class UserController {
 
         List<EntityModel<User>> userModels = new ArrayList<>();
         for (User user : users) {
-        userModels.add(EntityModel.of(user,
-            linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel()));
+            userModels.add(EntityModel.of(user,
+                linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel()));
         }
 
         CollectionModel<EntityModel<User>> collectionModel = CollectionModel.of(userModels,
@@ -58,19 +53,19 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<User>> getUserById(@PathVariable String id) {
         User user = userService.getUserById(id);
-        return user != null ? ResponseEntity.ok(userModelAssembler.toModel(user)) : ResponseEntity.notFound().build();
+        return user != null ? ResponseEntity.ok(EntityModel.of(user)) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<User>> addUser(@RequestBody User user) {
         User newUser = userService.addUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userModelAssembler.toModel(newUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(EntityModel.of(newUser));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<User>> updateUser(@PathVariable String id, @RequestBody User user) {
         User updatedUser = userService.updateUser(id, user);
-        return updatedUser != null ? ResponseEntity.ok(userModelAssembler.toModel(updatedUser))
+        return updatedUser != null ? ResponseEntity.ok(EntityModel.of(updatedUser))
                 : ResponseEntity.notFound().build();
     }
 
@@ -83,7 +78,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<EntityModel<User>> patchUser(@PathVariable String id, @RequestBody User user) {
         User patchedUser = userService.patchUser(id, user);
-        return patchedUser != null ? ResponseEntity.ok(userModelAssembler.toModel(patchedUser))
+        return patchedUser != null ? ResponseEntity.ok(EntityModel.of(patchedUser))
                 : ResponseEntity.notFound().build();
     }
 }
