@@ -375,7 +375,7 @@ curl -X GET http://localhost:8080/gbar/find?name={name}
 ##### Description
 It returns some information about received actor.
 
-#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Actor Recommendation </span>
+#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/post.png" width=45 style="vertical-align: middle;"> Actor Recommendation </span>
 ##### Curl
 ```
 curl -X GET http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "synergy":{synergy} "plot": {movie plot}}'
