@@ -14,6 +14,7 @@ package com.example.cse364project.domain;
 public class ActorRequest {
     private double[] genre;
     private String[] supporter;
+    private int synergy;
     private String plot;
 
     public double[] getGenre() {
@@ -28,6 +29,13 @@ public class ActorRequest {
     }
     public void setSupporter(String[] supporter) {
         this.supporter = supporter;
+    }
+    
+    public int getSynergy() {
+        return synergy;
+    }
+    public void setSynergy(int synergy) {
+        this.synergy = synergy;
     }
 
     public String getPlot() {
