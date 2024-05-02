@@ -1,4 +1,4 @@
-package com.example.domain;
+package com.example.cse364project.domain;
 
 import com.example.cse364project.domain.ActorRequest;
 import org.junit.jupiter.api.Test;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,13 +28,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<User>>> getUsers(
-            @RequestParam(required = false) Character gender,
-            @RequestParam(required = false) Integer age,
-            @RequestParam(required = false) Integer occupation,
-            @RequestParam(required = false) String postal) {
+        @RequestParam(required = false) Character gender,
+        @RequestParam(required = false) Integer age,
+        @RequestParam(required = false) Integer occupation,
+        @RequestParam(required = false) String postal) {
 
+        // User (String id, char gender, int age, int occupation, String postal)
         List<User> users;
-        
+
         if (gender != null && age != null && occupation != null && postal != null)
             users = userService.getUsersByGenderAndAgeAndOccupationAndPostal(gender, age, occupation, postal);
         else if (gender == null && age == null && occupation == null && postal == null)
@@ -41,8 +43,16 @@ public class UserController {
         else
             users = userService.getUsersByDynamicQuery(gender, age, occupation, postal);
 
-        return ResponseEntity.ok(CollectionModel.of(userModelAssembler.toCollectionModel(users),
-                linkTo(methodOn(UserController.class).getUsers(gender, age, occupation, postal)).withSelfRel()));
+        List<EntityModel<User>> userModels = new ArrayList<>();
+        for (User user : users) {
+        userModels.add(EntityModel.of(user,
+            linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel()));
+        }
+
+        CollectionModel<EntityModel<User>> collectionModel = CollectionModel.of(userModels,
+            linkTo(methodOn(UserController.class).getUsers(gender, age, occupation, postal)).withSelfRel());
+
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")

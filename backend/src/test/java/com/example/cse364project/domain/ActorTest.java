@@ -1,6 +1,5 @@
-package com.example.domain;
+package com.example.cse364project.domain;
 
-import com.example.cse364project.domain.Actor;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
