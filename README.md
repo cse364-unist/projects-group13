@@ -350,7 +350,7 @@ It outputs demographic data related to the viewers of these movies, assisting in
 
 ##### Curl
 ```
-curl -X GET http://localhost:8080/pua/top-rated?genre={genre1},{genre2},...
+curl -X GET http://localhost:8080/pua/top-rated?genres={genre1},{genre2},...
 ```
 ##### Description
 It returns detailed information about the top five highest-rated movies in the specified genres.
@@ -359,7 +359,7 @@ It returns detailed information about the top five highest-rated movies in the s
 
 ##### Curl
 ```
-curl -X GET http://localhost:8080/pua/lowest-rated?genre={genre1},{genre2},...
+curl -X GET http://localhost:8080/pua/lowest-rated?genres={genre1},{genre2},...
 ```
 ##### Description
 It returns detailed information about the top five lowest-rated movies in the specified genres.
