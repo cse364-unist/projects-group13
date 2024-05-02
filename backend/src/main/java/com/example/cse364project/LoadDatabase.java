@@ -60,7 +60,7 @@ public class LoadDatabase implements CommandLineRunner {
         log.info("Movies Database has been loaded.");
 
         //feature 3
-        List<Actor> actors = readActors("backend/data/feature2/movies.csv"); //"data/feature2/movies.csv"
+        List<Actor> actors = readActors("data/feature2/movies.csv");
         actorRepository.saveAll(actors);
 
         log.info("Actors Database has been loaded.");
