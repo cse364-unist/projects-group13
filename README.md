@@ -378,7 +378,11 @@ It returns some information about received actor.
 #### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Actor Recommendation </span>
 ##### Curl
 ```
-curl -X GET http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "plot": {movie plot}}'
+curl -X GET http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "synergy":{synergy} "plot": {movie plot}}'
+```
+##### Curl Example
+```
+curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{ "genre":[ 27.6, 7.4, 0, 52, 0, 6.6, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], "synergy" : 20, "supporter" : ["Robert Hays", "John Belushi"], "plot": "plot is here" }'
 ```
 
 ##### Description
