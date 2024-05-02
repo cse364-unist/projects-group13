@@ -44,23 +44,23 @@ public class LoadDatabase implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<Rating> ratings = readRatings("data/ratings.dat");
-        ratingRepository.saveAll(ratings);
+        //List<Rating> ratings = readRatings("data/ratings.dat");
+        //ratingRepository.saveAll(ratings);
 
         log.info("Rating Database has been loaded.");
 
-        List<User> users = readUsers("data/users.dat");
-        userRepository.saveAll(users);
+        //List<User> users = readUsers("data/users.dat");
+        //userRepository.saveAll(users);
 
         log.info("Users Database has been loaded.");
 
-        List<Movie> movies = readMovies("data/movies.dat");
-        movieRepository.saveAll(movies);
+        //List<Movie> movies = readMovies("data/movies.dat");
+        //movieRepository.saveAll(movies);
 
         log.info("Movies Database has been loaded.");
 
         //feature 3
-        List<Actor> actors = readActors("data/feature2/movies.csv");
+        List<Actor> actors = readActors("backend/data/feature2/movies.csv"); //"data/feature2/movies.csv"
         actorRepository.saveAll(actors);
 
         log.info("Actors Database has been loaded.");
@@ -134,6 +134,7 @@ public class LoadDatabase implements CommandLineRunner {
         // all genre in movie.csv file
         String[] genreArray = {"Drama", "Adventure", "Action", "Comedy", "Horror", "Biography", "Crime", "Fantasy", "Family", "Sci-Fi", "Animation", "Romance", "Music", "Western", "Thriller", "History", "Mystery", "Sport", "Musical"};
 
+        csvReader.readNext(); //read one line first : explanation line
         while ((parts = csvReader.readNext()) != null) {
             
             int existIndex = -1; // used to determine is the actor aleady in List
