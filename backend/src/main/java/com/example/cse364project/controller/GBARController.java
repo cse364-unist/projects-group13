@@ -72,6 +72,7 @@ public class GBARController {
         Set<Actor> result = recommedator.recommend(
                                                 request.getGenre(),
                                                 supporters,
+                                                request.getSynergy(),
                                                 request.getPlot(),
                                                 GBARService.getAllActor(), 5);
         
