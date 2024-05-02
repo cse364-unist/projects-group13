@@ -12,10 +12,10 @@ public class Movie {
     @Id
     private String id;
     private String title;
-    private int year;
+    private Integer year;
     private List<String> genres;
 
-    public Movie(String id, String title, int year, List<String> genres) {
+    public Movie(String id, String title, Integer year, List<String> genres) {
         this.id = id;
         this.title = title;
         this.year = year;
@@ -30,7 +30,7 @@ public class Movie {
         return title;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 

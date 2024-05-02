@@ -65,6 +65,22 @@ public class RatingService {
         return updatedRating;
     }
 
+    public Rating patchRating(String id, Rating newRating) {
+        Rating updatedRating = ratingRepository.findById(id)
+                .map(rating -> {
+                    if (newRating.getMovieId() != null) rating.setMovieId(newRating.getMovieId());
+                    if (newRating.getUserId() != null) rating.setUserId(newRating.getUserId());
+                    if (newRating.getRate() != 0) rating.setRate(newRating.getRate());
+                    if (newRating.getTimestamp() != null) rating.setTimestamp(newRating.getTimestamp());
+                    return ratingRepository.save(rating);
+                })
+                .orElseGet(() -> {
+                    newRating.setId(id);
+                    return ratingRepository.save(newRating);
+                });
+        return updatedRating;
+    }
+
     public void deleteRating(String id) {
         ratingRepository.deleteById(id);
     }

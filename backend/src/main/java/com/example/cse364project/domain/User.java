@@ -9,12 +9,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-    private char gender;
-    private int age;
-    private int occupation;
+    private Character gender;
+    private Integer age;
+    private Integer occupation;
     private String postal;
 
-    public User(String id, char gender, int age, int occupation, String postal) {
+    public User(String id, Character gender, Integer age, Integer occupation, String postal) {
         this.id = id;
         this.gender = gender;
         this.age = age;
@@ -26,15 +26,15 @@ public class User {
         return id;
     }
 
-    public char getGender() {
+    public Character getGender() {
         return gender;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public int getOccupation() {
+    public Integer getOccupation() {
         return occupation;
     }
 
