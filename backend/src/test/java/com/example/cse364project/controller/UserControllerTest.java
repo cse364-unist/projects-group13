@@ -228,9 +228,6 @@ class UserControllerTest {
 
     @Test
     void testAddUser2() throws Exception {
-        User user = new User("1", 'M', 30, 1, "");
-
-        when(userService.addUser(any(User.class))).thenReturn(user);
 
         mockMvc.perform(post("/users")
                     .contentType(MediaType.APPLICATION_JSON))
