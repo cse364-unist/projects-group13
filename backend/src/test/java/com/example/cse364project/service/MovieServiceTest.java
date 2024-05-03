@@ -28,7 +28,7 @@ public class MovieServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.initMocks(this);
         movieService = new MovieService(movieRepository);
     }
 
