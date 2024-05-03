@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Assertions;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class RatingServiceTest {
@@ -184,57 +186,96 @@ public class RatingServiceTest {
     @Test
     void testUpdateRating_RatingExists_ReturnsUpdatedRating() {
         // Given
+        String id = "1";
         Rating existingRating = new Rating("movieId", "userId", 5, "time");
-        existingRating.setId("1");
-        Rating updatedRating = new Rating("new_movieId", "new_userId", 4, "new_time");
-        when(ratingRepository.save(existingRating)).thenReturn(updatedRating);
-
-        // When
-        Rating result = ratingService.updateRating("1", updatedRating);
-
-        // Then
-        assertEquals(updatedRating, result);
-        assertEquals(updatedRating.getMovieId(), result.getMovieId());
-        assertEquals(updatedRating.getUserId(), result.getUserId());
-        assertEquals(updatedRating.getRate(), result.getRate());
-        assertEquals(updatedRating.getTimestamp(), result.getTimestamp());
-        verify(ratingRepository).findById("1");
-        verify(ratingRepository).save(existingRating);
-    }
-
-    @Test
-    void testUpdateRating_RatingDoesNotExist_ReturnsNewRating() {
-        // Given
-        Rating newRating = new Rating("movieId", "userId", 5, "time");
-        newRating.setId("1");        
-        when(ratingRepository.existsById(newRating.getId())).thenReturn(false);
+        existingRating.setId(id);
+        Rating newRating = new Rating("new_movieId", "new_userId", 4, "new_time");
+        newRating.setId(id);
+        when(ratingRepository.findById(id)).thenReturn(Optional.of(existingRating));
         when(ratingRepository.save(newRating)).thenReturn(newRating);
-
+    
         // When
-        Rating result = ratingService.addRating(newRating);
-
+        Rating result = ratingService.updateRating(id, newRating);
+    
         // Then
-        assertEquals(newRating, result);
-        verify(ratingRepository).existsById(newRating.getId());
+        assertEquals(newRating.getMovieId(), result.getMovieId());
+        assertEquals(newRating.getUserId(), result.getUserId());
+        assertEquals(newRating.getRate(), result.getRate());
+        assertEquals(newRating.getTimestamp(), result.getTimestamp());
+        verify(ratingRepository).findById(id);
         verify(ratingRepository).save(newRating);
     }
-
+    
     @Test
-    void testPatchRating_RatingExists_ReturnsUpdatedRating(){
+    void testPatchRating_RatingExists_ReturnsPatchedRating() {
         // Given
+        String id = "1";
         Rating existingRating = new Rating("movieId", "userId", 5, "time");
-        existingRating.setId("1");
-        when(ratingRepository.existsById(existingRating.getId())).thenReturn(true);
+        existingRating.setId(id);
+        Rating newRating = new Rating("new_movieId", "new_userId", 4, "new_time");
+        when(ratingRepository.findById(id)).thenReturn(Optional.of(existingRating));
         when(ratingRepository.save(existingRating)).thenReturn(existingRating);
-
+    
         // When
-        Rating result = ratingService.addRating(existingRating);
-
+        Rating result = ratingService.patchRating(id, newRating);
+    
         // Then
-        assertEquals(existingRating, result);
-        //verify(ratingRepository, never()).findById(existingRating.getId());
-        verify(ratingRepository).existsById(existingRating.getId());
+        assertEquals(newRating.getMovieId(), result.getMovieId());
+        assertEquals(newRating.getUserId(), result.getUserId());
+        assertEquals(newRating.getRate(), result.getRate());
+        assertEquals(newRating.getTimestamp(), result.getTimestamp());
+        verify(ratingRepository).findById(id);
         verify(ratingRepository).save(existingRating);
     }
+
+    @Test
+    void testPatchRating_RatingNotExists_ReturnsNewRating() {
+        // Given
+        String id = "1";
+        Rating newRating = new Rating("new_movieId", "new_userId", 4, "new_time");
+        when(ratingRepository.findById(id)).thenReturn(Optional.empty());
+        when(ratingRepository.save(newRating)).thenReturn(newRating);
+    
+        // When
+        Rating result = ratingService.patchRating(id, newRating);
+    
+        // Then
+        assertEquals(newRating.getMovieId(), result.getMovieId());
+        assertEquals(newRating.getUserId(), result.getUserId());
+        assertEquals(newRating.getRate(), result.getRate());
+        assertEquals(newRating.getTimestamp(), result.getTimestamp());
+        verify(ratingRepository).findById(id);
+        verify(ratingRepository).save(newRating);
+    }    
+
+    @Test
+    void testPatchRating_UpdatesFields_WhenNotNull() {
+        // Given
+        String id = "1";
+        String originalMovieId = "original_movieId";
+        String originalUserId = "original_userId";
+        int originalRate = 5;
+        String originalTimestamp = "original_timestamp";
+        
+        Rating existingRating = new Rating(originalMovieId, originalUserId, originalRate, originalTimestamp);
+        existingRating.setId(id);
+        
+        Rating newRating = new Rating(null, null, 0, null); // All fields are null or 0
+        when(ratingRepository.findById(id)).thenReturn(Optional.of(existingRating));
+        when(ratingRepository.save(existingRating)).thenReturn(existingRating);
+    
+        // When
+        Rating result = ratingService.patchRating(id, newRating);
+    
+        // Then
+        assertEquals(originalMovieId, result.getMovieId());
+        assertEquals(originalUserId, result.getUserId());
+        assertEquals(originalRate, result.getRate());
+        assertEquals(originalTimestamp, result.getTimestamp());
+        verify(ratingRepository).findById(id);
+        verify(ratingRepository).save(existingRating);
+    }
+        
+    
    // Similarly, write tests for other methods like getRatingsByUserId and getRatingByMovieIdAndUserId
 }
