@@ -92,6 +92,12 @@ You can request detailed information about the top five lowest-rated movies in t
 curl -X GET http://localhost:8080/pua/lowest-rated?genres={genre1},{genre2},...
 ```
 
+_For example:_
+
+```curl
+curl -X GET http://localhost:8080/pua/lowest-rated?genres=Drama,Fantasy
+```
+
 ---
 
 ### 🥸 Feature 2: Genre-Based Actor Recommendation
@@ -105,6 +111,12 @@ You can request some information about a specific actor.
 
 ```
 curl -X GET http://localhost:8080/gbar/find?name={name}
+```
+
+_For example:_
+
+```
+
 ```
 
 
@@ -146,22 +158,38 @@ You can request mapping data with genre combinations, their frequencies, and ave
 curl -X GET http://localhost:8080/gfa/{year}
 ```
 
+_For example:_
+
+```
+curl -X GET http://localhost:8080/gfa/1997
+```
+
 
 #### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Genre Frequencies by Genre </span>
 You can request mapping data with genre combinations, their frequencies, and average ratings where a specific `genre` is included in the combination. The `genre` should be a String.
 
 ```
-curl -X GET http://localhost:8080/gfa/{genre}
+curl -X GET http://localhost:8080/gfa/genre/{genre}
+```
+
+_For example:_
+
+```
+curl -X GET http://localhost:8080/gfa/genre/Drama
 ```
 
 
-#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Genre Frequencies by Year and Genre </span>
+[//]: # (#### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Genre Frequencies by Year and Genre </span>)
 
-You can request mapping data with genre combinations, their frequencies, and average ratings where a specific `genre` is included in the combination, based on the movies screened in a specific `year`. Both `year` and `genre` should be specified, with `year` as an integer and `genre` as a String.
+[//]: # ()
+[//]: # (You can request mapping data with genre combinations, their frequencies, and average ratings where a specific `genre` is included in the combination, based on the movies screened in a specific `year`. Both `year` and `genre` should be specified, with `year` as an integer and `genre` as a String.)
 
-```
-curl -X GET http://localhost:8080/gfa/{year}/{genre}
-```
+[//]: # ()
+[//]: # (```)
+
+[//]: # (curl -X GET http://localhost:8080/gfa/{year}/{genre})
+
+[//]: # (```)
 
 ---
 
