@@ -36,6 +36,12 @@ public class PUAServiceTest {
 
     @Mock
     private MovieRepository movieRepository;
+
+    @Mock
+    private RatingRepository ratingRepository;
+
+    @Mock
+    private UserRepository userRepository;
     
     @InjectMocks
     private PUAService puaService;
@@ -62,6 +68,7 @@ public class PUAServiceTest {
         assertEquals(5.0, results.get(0).getAverageRating(), 0.01);
     }
 
+
     @Test
     public void testFindLowestRatedMoviesByGenre() {
         List<String> genres = Arrays.asList("Action", "Comedy");
@@ -81,7 +88,7 @@ public class PUAServiceTest {
         assertNotNull(results);
         assertFalse(results.isEmpty());
         assertEquals("Movie1", results.get(0).getMovie().getTitle());
-        assertEquals(1.0, results.get(0).getAverageRating(), 0.01); // 평점 확인
+        assertEquals(1.0, results.get(0).getAverageRating(), 0.01);
     }
 
 }
