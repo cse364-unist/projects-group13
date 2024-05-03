@@ -27,25 +27,12 @@ class UserControllerTest {
     @Mock
     private UserService userService;
 
-    @Mock
-    private UserModelAssembler userModelAssembler;
-
     @InjectMocks
     private UserController userController;
 
     private MockMvc mockMvc;
 
     private ObjectMapper mapper;
-
-    private String toJson(User u) {
-        return "{" +
-            "id: " + u.getId() +
-            ", gender: " + u.getGender() +
-            ", age: " + u.getAge() +
-            ", occupation: " + u.getOccupation() +
-            ", postal: " + u.getPostal() +
-        "}";
-    }
 
     @BeforeEach
     void setUp() {
@@ -66,7 +53,9 @@ class UserControllerTest {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(print());
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"))
+                .andExpect(jsonPath("$.content[1].id").value("2"));
     }
 
     @Test
@@ -83,7 +72,8 @@ class UserControllerTest {
                     .param("postal", "12345"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(print());
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"));
     }
 
     @Test
@@ -96,7 +86,8 @@ class UserControllerTest {
                     .param("age", "30"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(print());
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"));
     }
 
     @Test
@@ -109,7 +100,52 @@ class UserControllerTest {
                     .param("gender", "M"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(print());
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"));
+    }
+
+    @Test
+    void getUser5() throws Exception {
+        User user1 = new User("1", 'M', 30, 1, "12345");
+
+        when(userService.getUsersByDynamicQuery(null, null, null, "12345")).thenReturn(Arrays.asList(user1));
+
+        mockMvc.perform(get("/users")
+                    .param("postal", "12345"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"));
+    }
+
+    @Test
+    void getUser6() throws Exception {
+        User user1 = new User("1", 'M', 30, 1, "12345");
+
+        when(userService.getUsersByDynamicQuery(null, null, 1, null)).thenReturn(Arrays.asList(user1));
+
+        mockMvc.perform(get("/users")
+                    .param("occupation", "1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"));
+    }
+
+    @Test
+    void getUser7() throws Exception {
+        User user1 = new User("1", 'M', 30, 1, "12345");
+
+        when(userService.getUsersByDynamicQuery('M', 30, 1, null)).thenReturn(Arrays.asList(user1));
+
+        mockMvc.perform(get("/users")
+                    .param("gender", "M")
+                    .param("age", "30")
+                    .param("occupation", "1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value("1"));
     }
 
     @Test
