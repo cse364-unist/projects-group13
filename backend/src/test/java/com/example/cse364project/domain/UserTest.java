@@ -1,5 +1,8 @@
 package com.example.cse364project.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -56,5 +59,45 @@ public class UserTest {
 
         Assertions.assertEquals(user1, user2);
         Assertions.assertEquals(user1.hashCode(), user2.hashCode());
+
+        User differentId = new User("456", gender, age, occupation, postal);
+        assertFalse(user1.equals(differentId));
+
+        User differentGender = new User(id, 'W', age, occupation, postal);
+        assertFalse(user1.equals(differentGender));
+
+        User differentAge = new User(id, gender, 35, occupation, postal);
+        assertFalse(user1.equals(differentAge));
+
+        User differentOccupation = new User(id, gender, age, 2, postal);
+        assertFalse(user1.equals(differentOccupation));
+
+        User differentPostal = new User(id, gender, age, occupation, "54321");
+        assertFalse(user1.equals(differentPostal));
+
+        assertFalse(user1.equals(null));
+
+        Object otherObject = new Object(); 
+
+        assertFalse(user1.equals(otherObject));
+    }
+
+    @Test
+    void testToString() {
+        String id = "123";
+        char gender = 'M';
+        int age = 25;
+        int occupation = 1;
+        String postal = "12345";
+
+        User user = new User(id, gender, age, occupation, postal);
+        String expectedString = "User{" + '\'' +
+        "id=" + id +
+        ", gender=" + gender +
+        ", age=" + age +
+        ", occupation=" + occupation +
+        ", postal='" + postal + '\'' +
+        '}';
+        assertEquals(expectedString, user.toString());
     }
 }

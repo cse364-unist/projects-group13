@@ -15,4 +15,11 @@ public class RatingNotFoundExceptionAdvice {
     String ratingNotFoundHandler(RatingNotFoundException ex) {
         return ex.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String illegalArgumentExceptionHandler(IllegalArgumentException ex) {
+        return ex.getMessage();
+    }
 }

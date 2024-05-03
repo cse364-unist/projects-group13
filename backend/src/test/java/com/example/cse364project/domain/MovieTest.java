@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,16 +35,44 @@ public class MovieTest {
     }
 
     @Test
-    void testEquals() {
-        Movie sameMovie = new Movie("1", "Movie Title", 2022, new ArrayList<>(Arrays.asList("Action", "Adventure")));
-        Assertions.assertTrue(movie.equals(sameMovie));
+    void testAddGenrewithnull(){
+        Movie movie = new Movie("1", "Movie Title", 2022, null);
+        movie.addGenre("Action");
+        assertEquals(1, movie.getGenres().size());
+        assertTrue(movie.getGenres().contains("Action"));
     }
 
     @Test
-    void testEquals2() {
-        Assertions.assertEquals(movie, movie);
-        Assertions.assertNotEquals(movie, null);
-        Assertions.assertNotEquals(movie, Integer.valueOf(0));
+    void testEquals() {
+        List<String> genres = new ArrayList<>();
+        genres.add("Action");
+        Movie movie1 = new Movie("1", "Movie Title", 2022, genres);
+        assertTrue(movie1.equals(movie1));
+
+        Movie movie2 = new Movie("1", "Movie Title", 2022, genres);
+        assertTrue(movie1.equals(movie2));
+
+        Movie differentId = new Movie("2", "Movie Title", 2022, genres);
+        assertFalse(movie1.equals(differentId));
+
+        Movie differentTitle = new Movie("1", "Different Title", 2022, genres);
+        assertFalse(movie1.equals(differentTitle));
+
+        Movie differentYear = new Movie("1", "Movie Title", 2023, genres);
+        assertFalse(movie1.equals(differentYear));
+
+        List<String> differentGenres = new ArrayList<>();
+        differentGenres.add("Drama");
+        Movie differentGenresMovie = new Movie("1", "Movie Title", 2022, differentGenres);
+        assertFalse(movie1.equals(differentGenresMovie));
+
+        Movie allSame = new Movie("1", "Movie Title", 2022, genres);
+        assertTrue(movie1.equals(allSame));
+
+        Object otherObject = new Object(); 
+
+        assertFalse(movie1.equals(null));
+        assertFalse(movie1.equals(otherObject));
     }
 
     @Test

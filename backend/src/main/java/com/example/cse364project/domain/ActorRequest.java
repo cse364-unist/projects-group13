@@ -8,6 +8,7 @@ package com.example.cse364project.domain;
  *
  * @param genre genre vector that can be made specific way
  * @param supporter supporting actors
+ * @param synergy 0 ~ 100 int that represents rate of supporting vector (0 ~ 0.5)
  * @param plot plot of movie 
  * @return return one actor that has same name
  */

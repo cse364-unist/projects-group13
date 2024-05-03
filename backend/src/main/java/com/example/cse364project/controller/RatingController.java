@@ -2,14 +2,10 @@ package com.example.cse364project.controller;
 
 import com.example.cse364project.domain.Movie;
 import com.example.cse364project.domain.Rating;
-import com.example.cse364project.exception.RatingNotFoundException;
 import com.example.cse364project.repository.MovieRatingRepository;
 import com.example.cse364project.service.RatingService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,21 +28,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/ratings")
 public class RatingController {
 
-    @Autowired
-    private MovieRatingRepository movieRatingRepository;
-
-    @Autowired
-    private MovieModelAssembler movieModelAssembler;
+    private final MovieRatingRepository movieRatingRepository;
 
     private final RatingService ratingService;
-    private final RatingModelAssembler ratingModelAssembler;
 
-    public RatingController(RatingService ratingService, RatingModelAssembler ratingModelAssembler) {
+    public RatingController(RatingService ratingService, MovieRatingRepository movieRatingRepository) {
         this.ratingService = ratingService;
-        this.ratingModelAssembler = ratingModelAssembler;
+        this.movieRatingRepository = movieRatingRepository;
     }
 
-    // No all method: Responsing time problem
     @GetMapping("/{rating}")
     public ResponseEntity<CollectionModel<EntityModel<Movie>>> getMoviesWithRating(@PathVariable int rating,
             @RequestParam(required = false) List<String> genre,
@@ -55,7 +44,7 @@ public class RatingController {
         List<Movie> movies;
 
         if (rating <= 0 || rating >= 6)
-            throw new RatingNotFoundException("Rating values should be in between 1~5.");
+            return ResponseEntity.badRequest().build();
 
         if (genre != null && year != null)
             movies = movieRatingRepository.findMoviesWithGTEAverageRatingAndGenreAndYear(rating, genre, year);
@@ -66,8 +55,12 @@ public class RatingController {
         else
             movies = movieRatingRepository.findMoviesWithGTEAverageRating(rating);
 
-        List<EntityModel<Movie>> movieEntity = movies.stream().map(movieModelAssembler::toModel)
-                .collect(Collectors.toList());
+        List<EntityModel<Movie>> movieEntity = movies.stream().map(movie -> {
+            EntityModel<Movie> movieModel = EntityModel.of(movie,
+                    linkTo(methodOn(RatingController.class).getMoviesWithRating(rating, genre, year)).withSelfRel());
+            movieModel.add(linkTo(methodOn(RatingController.class).getRatingById(movie.getId())).withRel("rating"));
+            return movieModel;
+        }).collect(Collectors.toList());
 
         CollectionModel<EntityModel<Movie>> collectionModel = CollectionModel.of(movieEntity,
                 linkTo(methodOn(RatingController.class).getMoviesWithRating(rating, genre, year)).withSelfRel());
@@ -81,19 +74,16 @@ public class RatingController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addRating(@RequestBody Rating rating) {
-        EntityModel<Rating> ratingModel = ratingModelAssembler.toModel(ratingService.addRating(rating));
-        return ResponseEntity
-                .created(ratingModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(ratingModel);
+    public ResponseEntity<Rating> addRating(@RequestBody Rating rating) {
+        Rating addedRating = ratingService.addRating(rating);
+        return ResponseEntity.created(linkTo(methodOn(RatingController.class).getRatingById(addedRating.getId())).toUri())
+                .body(addedRating);
     }
 
     @PutMapping("/id/{id}")
-    public ResponseEntity<?> updateRating(@PathVariable String id, @RequestBody Rating rating) {
-        EntityModel<Rating> ratingModel = ratingModelAssembler.toModel(ratingService.updateRating(id, rating));
-        return ResponseEntity
-                .created(ratingModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(ratingModel);
+    public ResponseEntity<Rating> updateRating(@PathVariable String id, @RequestBody Rating rating) {
+        Rating updatedRating = ratingService.updateRating(id, rating);
+        return ResponseEntity.ok(updatedRating);
     }
 
     @DeleteMapping("/id/{id}")
@@ -103,11 +93,9 @@ public class RatingController {
     }
 
     @PatchMapping("/id/{id}")
-    public ResponseEntity<?> patchRating(@PathVariable String id, @RequestBody Rating rating) {
-        EntityModel<Rating> ratingModel = ratingModelAssembler.toModel(ratingService.patchRating(id, rating));
-        return ResponseEntity
-                .created(ratingModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(ratingModel);
+    public ResponseEntity<Rating> patchRating(@PathVariable String id, @RequestBody Rating rating) {
+        Rating patchedRating = ratingService.patchRating(id, rating);
+        return ResponseEntity.ok(patchedRating);
     }
 
     @GetMapping("/movie/{movieId}")

@@ -2,7 +2,6 @@ package com.example.cse364project.repository;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -15,7 +14,6 @@ import com.example.cse364project.dto.MovieRate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -24,11 +22,11 @@ public class MovieRatingRepository {
     //private static final Logger log = LoggerFactory.getLogger(MovieRatingRepository.class);
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
     private MovieRepository movieRepository;
 
-    public MovieRatingRepository(MongoTemplate mongoTemplate) {
+    public MovieRatingRepository(MongoTemplate mongoTemplate, MovieRepository movieRepository) {
         this.mongoTemplate = mongoTemplate;
+        this.movieRepository = movieRepository;
     }
 
     /**
@@ -56,8 +54,7 @@ public class MovieRatingRepository {
         List<Movie> movies = new ArrayList<>();
         for (MovieRate ratingAverage : result.getMappedResults()) {
             String movieId = ratingAverage.getMovieId();
-            Optional<Movie> opMovie = movieRepository.findById(movieId);
-            if (opMovie.isPresent()) movies.add(opMovie.get());
+            movies.add(movieRepository.findById(movieId).get());
         }
 
         movies.sort(Comparator.comparingInt(movie -> Integer.parseInt(movie.getId())));

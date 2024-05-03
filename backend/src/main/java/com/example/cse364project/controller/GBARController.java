@@ -26,8 +26,11 @@ public class GBARController {
     
     private final GBARService GBARService;
 
-    public GBARController(GBARService GBARService) {
+    private final Recommendator recommendator;
+
+    public GBARController(GBARService GBARService, Recommendator recommendator) {
         this.GBARService = GBARService;
+        this.recommendator = recommendator;
     }
 
     /**
@@ -68,8 +71,7 @@ public class GBARController {
             supporters.add(GBARService.getActorByName(name));
         }
 
-        Recommendator recommedator = new Recommendator();
-        Set<Actor> result = recommedator.recommend(
+        Set<Actor> result = recommendator.recommend(
                                                 request.getGenre(),
                                                 supporters,
                                                 request.getSynergy(),

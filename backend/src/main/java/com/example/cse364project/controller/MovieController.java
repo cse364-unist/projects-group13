@@ -4,13 +4,14 @@ import com.example.cse364project.domain.Movie;
 import com.example.cse364project.service.MovieService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,11 +19,9 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
-    private final MovieModelAssembler movieModelAssembler;
 
-    public MovieController(MovieService movieService, MovieModelAssembler movieModelAssembler) {
+    public MovieController(MovieService movieService) {
         this.movieService = movieService;
-        this.movieModelAssembler = movieModelAssembler;
     }
 
     @GetMapping
@@ -40,27 +39,46 @@ public class MovieController {
         else
             movies = movieService.getAllMovies();
 
-        return ResponseEntity.ok(movieModelAssembler.toCollectionModel(movies));
+        List<EntityModel<Movie>> movieModels = new ArrayList<>();
+        for (Movie movie : movies) {
+            movieModels.add(EntityModel.of(movie,
+                linkTo(methodOn(MovieController.class).getMovieById(movie.getId())).withSelfRel()));
+        }
+
+        CollectionModel<EntityModel<Movie>> movieCollectionModel = CollectionModel.of(movieModels, 
+            linkTo(methodOn(MovieController.class).getMovies(year, genre)).withSelfRel());
+
+        return ResponseEntity.ok(movieCollectionModel);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<Movie>> getMovieById(@PathVariable String id) {
         Movie movie = movieService.getMovieById(id);
-        return ResponseEntity.ok(movieModelAssembler.toModel(movie));
+        EntityModel<Movie> movieModel = EntityModel.of(movie);
+        Link selfLink = Link.of("/movies/" + movieModel.getContent().getId()).withSelfRel();
+        movieModel.add(selfLink);
+
+        return ResponseEntity.ok(movieModel);
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<Movie>> addMovie(@RequestBody Movie movie) {
         Movie newMovie = movieService.addMovie(movie);
-        return ResponseEntity
-                .created(linkTo(methodOn(MovieController.class).getMovieById(newMovie.getId())).toUri())
-                .body(movieModelAssembler.toModel(newMovie));
+        EntityModel<Movie> movieModel = EntityModel.of(newMovie);
+        Link selfLink = Link.of("/movies/" + movieModel.getContent().getId()).withSelfRel();
+        movieModel.add(selfLink);
+
+        return ResponseEntity.ok(movieModel);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<Movie>> updateMovie(@PathVariable String id, @RequestBody Movie movie) {
         Movie updatedMovie = movieService.updateMovie(id, movie);
-        return ResponseEntity.ok(movieModelAssembler.toModel(updatedMovie));
+        EntityModel<Movie> movieModel = EntityModel.of(updatedMovie);
+        Link selfLink = Link.of("/movies/" + movieModel.getContent().getId()).withSelfRel();
+        movieModel.add(selfLink);
+
+        return ResponseEntity.ok(movieModel);
     }
 
     @DeleteMapping("/{id}")
@@ -72,6 +90,10 @@ public class MovieController {
     @PatchMapping("/{id}")
     public ResponseEntity<EntityModel<Movie>> patchMovie(@PathVariable String id, @RequestBody Movie movie) {
         Movie patchedMovie = movieService.patchMovie(id, movie);
-        return ResponseEntity.ok(movieModelAssembler.toModel(patchedMovie));
+        EntityModel<Movie> movieModel = EntityModel.of(patchedMovie);
+        Link selfLink = Link.of("/movies/" + movieModel.getContent().getId()).withSelfRel();
+        movieModel.add(selfLink);
+
+        return ResponseEntity.ok(movieModel);
     }
 }
