@@ -5,7 +5,6 @@ Cine Insight is a novel project designed to support comprehensive decision-makin
 Our platform leverages advanced data analysis to provide valuable recommendations for filmmakers, actors, and investors.
 By distilling industry data, Cine Insight helps stakeholders make informed, rational decisions to enhance their project outcomes.
 
----
 ## Content
 
 1. [How To Execute?](#how-to-excute)
@@ -20,7 +19,6 @@ By distilling industry data, Cine Insight helps stakeholders make informed, rati
    1. [User API Informations](#user-api-informations)
    2. [For Developers](#for-developers)
 
----
 
 ## How to excute?
 
@@ -66,8 +64,14 @@ It outputs demographic data related to the viewers of these movies, assisting in
 #### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Top-Rated Movies </span>
 You can request detailed information about the top five highest-rated movies in the specified genres.
 
-```
+```curl
 curl -X GET http://localhost:8080/pua/top-rated?genres={genre1},{genre2},...
+```
+
+_For example:_
+
+```curl
+curl -X GET http://localhost:8080/pua/top-rated?genres=Action,Fantasy,Sci-Fi
 ```
 
 
@@ -79,6 +83,7 @@ You can request detailed information about the top five lowest-rated movies in t
 curl -X GET http://localhost:8080/pua/lowest-rated?genres={genre1},{genre2},...
 ```
 
+---
 
 ### 🥸 Feature 2: Genre-Based Actor Recommendation
 
@@ -102,12 +107,12 @@ You can request a JSON-formatted recommendation based on the given information. 
 curl -X GET http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "synergy":{synergy} "plot": {movie plot}}'
 ```
 
-**For example:**
+_For example:_
 ```
 curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{ "genre":[ 27.6, 7.4, 0, 52, 0, 6.6, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], "synergy" : 20, "supporter" : ["Robert Hays", "John Belushi"], "plot": "plot is here" }'
 ```
 
-
+---
 
 ### 🖼️ Feature 3: Genre Frequency Analysis
 
@@ -168,7 +173,10 @@ curl -X GET http://localhost:8080/movies{?year, genre}
 | `year` | Integer | The year that movies screened. |
 | `genre` | List<String> | The genre that movies have |
 
-**For example:** `curl -X GET http://localhost:8080/movies?genre=Animation,Action`
+_For example:_ 
+```
+curl -X GET http://localhost:8080/movies?genre=Animation,Action
+```
 
 #### <span style="display: flex; align-items: center; gap: 5px;"> <img src="./assets/img/get.png" width=45 style="vertical-align: middle;"> Movie </span>
 You can access the specific movie by ID.
@@ -303,7 +311,6 @@ curl -X PUT http://localhost:8080/users/{id} -H ‘Content-type:application/json
 You can request DELETE operation by giving the url with ID.
 
 
-##### Curl
 ```
 curl -X DELETE http://localhost:8080/users/{id}
 ```
@@ -336,7 +343,7 @@ curl -X GET http://localhost:8080/ratings/{rating}{?year, genre}
 | `year` | Integer | The year that movies screened. |
 | `genre` | List<String> | The genre that movies have |
 
-**For example:**
+_For example:_
 ```curl
 curl -X GET http://localhost:8080/ratings/4?genre=Animation,Action
 ```
