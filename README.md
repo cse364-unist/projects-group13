@@ -116,7 +116,7 @@ curl -X GET http://localhost:8080/gbar/find?name={name}
 _For example:_
 
 ```
-
+curl -X GET http://localhost:8080/gbar/find?name=Robert%20Hays
 ```
 
 
