@@ -5,6 +5,8 @@ Cine Insight is a novel project designed to support comprehensive decision-makin
 Our platform leverages advanced data analysis to provide valuable recommendations for filmmakers, actors, and investors.
 By distilling industry data, Cine Insight helps stakeholders make informed, rational decisions to enhance their project outcomes.
 
+---
+
 >[!CAUTION]
 > This repository is private, requiring mandatory login to ensure security and restricted access.
 > The API key has been set as an environment variable in the Dockerfile included in the submitted .zip file.
