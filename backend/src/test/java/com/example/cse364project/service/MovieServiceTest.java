@@ -1,6 +1,7 @@
 package com.example.cse364project.service;
 
 import com.example.cse364project.domain.Movie;
+import com.example.cse364project.domain.Rating;
 import com.example.cse364project.exception.MovieNotFoundException;
 import com.example.cse364project.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -304,5 +305,30 @@ public class MovieServiceTest {
         verify(movieRepository).findById(id);
         verify(movieRepository).save(existingMovie);
     }    
+     
+    @Test
+    void testPatchMovie_WhenNotNull() {
+        // Given
+        String id = "1";
+        String originaltitle = "original_title";
+        int originalyear = 2000;
+        List<String> originalgenres = Arrays.asList("Genre1", "Genre2");
         
+        Movie existingMovie = new Movie(id, originaltitle, originalyear, originalgenres);
+        
+        Movie newMovie = new Movie(null, null, null, null); // All fields are null or 0
+        when(movieRepository.findById(id)).thenReturn(Optional.of(existingMovie));
+        when(movieRepository.save(existingMovie)).thenReturn(existingMovie);
+    
+        // When
+        Movie result = movieService.patchMovie(id, newMovie);
+    
+        // Then
+        assertEquals(id, result.getId());
+        assertEquals(originaltitle, result.getTitle());
+        assertEquals(originalyear, result.getYear());
+        assertEquals(originalgenres, result.getGenres());
+        verify(movieRepository).findById(id);
+        verify(movieRepository).save(existingMovie);
+    }
 }

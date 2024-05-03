@@ -1,5 +1,9 @@
 package com.example.cse364project.domain;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -83,10 +87,29 @@ public class RatingTest {
 
     @Test
     public void testEquals() {
-        Rating rating1 = new Rating("123", "456", 5, "2022-01-01");
-        Rating rating2 = new Rating("123", "456", 5, "2022-01-01");
-        Assertions.assertTrue(rating1.equals(rating1));
-        Assertions.assertTrue(rating1.equals(rating2));
-        Assertions.assertFalse(rating1.equals(null));
+        Rating rating1 = new Rating("movie1", "user1", 5, "2024-04-30");
+        assertTrue(rating1.equals(rating1));
+
+        Rating rating2 = new Rating("movie1", "user1", 5, "2024-04-30");
+        assertTrue(rating1.equals(rating2));
+
+        Rating differentMovieId = new Rating("movie2", "user1", 5, "2024-04-30");
+        assertFalse(rating1.equals(differentMovieId));
+
+        Rating differentUserId = new Rating("movie1", "user2", 5, "2024-04-30");
+        assertFalse(rating1.equals(differentUserId));
+
+        Rating differentRate = new Rating("movie1", "user1", 4, "2024-04-30");
+        assertFalse(rating1.equals(differentRate));
+
+        Rating differentTimestamp = new Rating("movie1", "user1", 5, "2024-05-01");
+        assertFalse(rating1.equals(differentTimestamp));
+
+        Rating allDifferent = new Rating("movie2", "user2", 4, "2024-05-01");
+        assertFalse(rating1.equals(allDifferent));
+
+        assertNotEquals(rating1, null);
+        assertNotEquals(rating1, new Object());
+
     }
 }
