@@ -5,10 +5,17 @@ Cine Insight is a novel project designed to support comprehensive decision-makin
 Our platform leverages advanced data analysis to provide valuable recommendations for filmmakers, actors, and investors.
 By distilling industry data, Cine Insight helps stakeholders make informed, rational decisions to enhance their project outcomes.
 
+>[!CAUTION]
+> This repository is private, requiring mandatory login to ensure security and restricted access.
+> The API key has been set as an environment variable in the Dockerfile included in the submitted .zip file.
+> Note that the current Dockerfile in this repository does not contain any API key.
+> 
+> **Therefore, to successfully build the project, you must build using the Dockerfile from the submission file, not the Dockerfile in this repository.**
+
 ## Content
 
 1. [How To Execute?](#how-to-excute)
-2. [API Explain](#api-explain)
+2. [API Explain](#api-documentation)
    1. [Feature1: Preferred User Analysis](#-feature-1-preferred-user-analysis)
    2. [Feature2: Genre-Based Actor Recommendation](#-feature-2-genre-based-actor-recommendation)
    3. [Feature3: Genre Frequency Analysis](#-feature-3-genre-frequency-analysis)
@@ -18,7 +25,7 @@ By distilling industry data, Cine Insight helps stakeholders make informed, rati
 3. [Appendix](#appendix)
    1. [User API Informations](#user-api-informations)
    2. [For Developers](#for-developers)
-
+      
 
 ## How to excute?
 
