@@ -130,7 +130,14 @@ curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application
 
 _For example:_
 ```
-curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{ "genre":[ 27.6, 7.4, 0, 52, 0, 6.6, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], "synergy" : 20, "supporter" : ["Robert Hays", "John Belushi"], "plot": "plot is here" }'
+curl -X POST http://localhost:8080/gbar/recommend \
+-H 'Content-Type: application/json' \
+-d '{ 
+      "genre": [27.6, 7.4, 0, 52, 0, 6.6, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+      "synergy": 20, 
+      "supporter": ["Robert Hays", "John Belushi"], 
+      "plot": "plot is here" 
+    }'
 ```
 
 ---
