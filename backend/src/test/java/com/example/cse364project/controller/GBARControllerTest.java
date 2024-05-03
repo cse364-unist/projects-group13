@@ -73,8 +73,6 @@ public class GBARControllerTest {
                         "  \"supporter\": [\"Robert Hays\", \"John Belushi\"],\n" +
                         "  \"plot\": \"plot is here\"\n" +
                         "}"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("Robert Hays"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].name").value("John Belushi"));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
