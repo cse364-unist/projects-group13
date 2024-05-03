@@ -15,7 +15,7 @@ By distilling industry data, Cine Insight helps stakeholders make informed, rati
 ## Content
 
 1. [How To Execute?](#how-to-excute)
-2. [API Explain](#api-documentation)
+2. [API Documentation](#api-documentation)
    1. [Feature1: Preferred User Analysis](#-feature-1-preferred-user-analysis)
    2. [Feature2: Genre-Based Actor Recommendation](#-feature-2-genre-based-actor-recommendation)
    3. [Feature3: Genre Frequency Analysis](#-feature-3-genre-frequency-analysis)
