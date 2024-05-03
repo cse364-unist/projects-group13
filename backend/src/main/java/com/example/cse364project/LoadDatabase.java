@@ -148,7 +148,7 @@ public class LoadDatabase implements CommandLineRunner {
             }
 
             if (genreIndex == -1) {
-                log.info("cannot find genre : " + parts.toString());
+                // log.info("cannot find genre : " + parts.toString());
                 continue;
             }
 

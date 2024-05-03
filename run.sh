@@ -2,9 +2,9 @@
 
 mongod --bind_ip_all &
 
-git clone https://github.com/cse364-unist/projects-group13.git
+git clone https://$GITHUB_TOKEN@github.com/cse364-unist/projects-group13.git
 
-cd projects-group13
+cd projects-group13/backend
 
 git checkout milestone2
 
