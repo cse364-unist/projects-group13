@@ -163,7 +163,7 @@ public class LoadDatabase implements CommandLineRunner {
             }
 
             // actor that has name is aleady exist
-            if (existIndex >= 0) {
+            if (existIndex >= 0 && existActor != null) {
 
                 existActor.getTitles().add(parts[0]); // add movie title in Actor
                 existActor.getCount()[genreIndex] += 1; // count up
