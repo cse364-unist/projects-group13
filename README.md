@@ -125,7 +125,7 @@ _For example:_
 You can request a JSON-formatted recommendation based on the given information. This includes a vectorized genre of the movie and actor recommendations that fit with the movie.
 
 ```
-curl -X GET http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "synergy":{synergy} "plot": {movie plot}}'
+curl -X POST http://localhost:8080/gbar/recommend -H ‘Content-type:application/json’ -d '{"genre": [{genre1}, {genre2}, {genre3}...], "supporter": [{name1}, {name2}...], "synergy":{synergy} "plot": {movie plot}}'
 ```
 
 _For example:_
