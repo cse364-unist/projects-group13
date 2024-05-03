@@ -43,7 +43,7 @@ By distilling industry data, Cine Insight helps stakeholders make informed, rati
    ```
 7. Enter `sh run.sh` or `bash run.sh` and wait until you see this:
    ```
-   Movies Database has been loaded.
+   Actors Database has been loaded.
    ```
 > [!NOTE]
 > This takes at least 50 seconds. Wait until all the database loaded. If you call any API before this done, nothing would work.
