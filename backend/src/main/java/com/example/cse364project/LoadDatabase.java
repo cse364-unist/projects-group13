@@ -134,7 +134,6 @@ public class LoadDatabase implements CommandLineRunner {
         // all genre in movie.csv file
         String[] genreArray = {"Drama", "Adventure", "Action", "Comedy", "Horror", "Biography", "Crime", "Fantasy", "Family", "Sci-Fi", "Animation", "Romance", "Music", "Western", "Thriller", "History", "Mystery", "Sport", "Musical"};
 
-        csvReader.readNext(); //read one line first : explanation line
         while ((parts = csvReader.readNext()) != null) {
             
             int existIndex = -1; // used to determine is the actor aleady in List
