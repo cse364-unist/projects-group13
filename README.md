@@ -1,5 +1,5 @@
 # 🎬 Cine Insight
-> **CSE364 Group Project Group.13**
+> **CSE364 Group Project - Group.13**
 
 Cine Insight is a novel project designed to support comprehensive decision-making in the film industry.
 Our platform leverages advanced data analysis to provide valuable recommendations for filmmakers, actors, and investors.
