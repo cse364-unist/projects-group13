@@ -1,27 +1,25 @@
 package com.example.cse364project.service;
-/* 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-=import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.cse364project.domain.Movie;
 import com.example.cse364project.dto.GenreRate;
 import com.example.cse364project.dto.MovieRate;
-import com.example.cse364project.exception.MovieNotFoundException;
 import com.example.cse364project.repository.MovieRatingRepository;
 import com.example.cse364project.repository.MovieRepository;
-import com.example.cse364project.service.GFAService;
-import com.example.cse364project.utils.Genres;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 public class GFAServiceTest {
 
@@ -31,40 +29,154 @@ public class GFAServiceTest {
     @Mock
     private MovieRepository movieRepository;
 
-    @InjectMocks
     private GFAService gfaService;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        gfaService = new GFAService(movieRatingRepository, movieRepository);
     }
 
     @Test
     public void testGetGenreFrequencyWithRatings() {
-        // Mock data
+        // Arrange
         List<MovieRate> movieRates = Arrays.asList(
-            new MovieRate("1", 4.5),
-            new MovieRate("2", 3.8),
-            new MovieRate("3", 4.0)
+                new MovieRate("1", 4.5),
+                new MovieRate("2", 3.8),
+                new MovieRate("3", 4.2),
+                new MovieRate("4", 4.0),
+                new MovieRate("5", 3.5)
         );
 
-        List<String> genres = new ArrayList<>();
-        genres.add("Action");
+        List<Movie> movies = Arrays.asList(
+                new Movie("1", "Movie 1", 2021, Arrays.asList("Action")),
+                new Movie("2", "Movie 2", 2021, Arrays.asList("Action")),
+                new Movie("3", "Movie 3", 2021, Arrays.asList("Action")),
+                new Movie("4", "Movie 4", 2021, Arrays.asList("Action")),
+                new Movie("5", "Movie 5", 2021, Arrays.asList("Action"))
+        );
 
-        // Mock behavior
         when(movieRatingRepository.findAllRatings()).thenReturn(movieRates);
-        when(movieRepository.findById("1")).thenReturn(java.util.Optional.of(new Movie("1", "Test Movie 1", 2022,genres)));
-        when(movieRepository.findById("2")).thenReturn(java.util.Optional.of(new Movie("2", "Test Movie 2", 2022,genres)));
-        when(movieRepository.findById("3")).thenReturn(java.util.Optional.of(new Movie("3", "Test Movie 3", 2022, genres)));
+        when(movieRepository.findById(eq("1"))).thenReturn(Optional.of(movies.get(0)));
+        when(movieRepository.findById(eq("2"))).thenReturn(Optional.of(movies.get(1)));
+        when(movieRepository.findById(eq("3"))).thenReturn(Optional.of(movies.get(2)));
+        when(movieRepository.findById(eq("4"))).thenReturn(Optional.of(movies.get(3)));
+        when(movieRepository.findById(eq("5"))).thenReturn(Optional.of(movies.get(4)));
 
-        // Execute method
+        // Act
         List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatings();
 
-        // Verify results
-        assertEquals(2, genreRates.size()); // Assuming only two genres exist in the mock data
-        // Add more assertions based on your expected behavior
+        // Assert
+        assertEquals(1, genreRates.size());
+        // Add more assertions based on your expected results
     }
 
-    // Add more test methods for other public methods in GFAService if needed
+    @Test
+    public void testGetGenreFrequencyWithRatingsIncludingYear() {
+        // Arrange
+        int year = 2021;
+        List<MovieRate> movieRates = Arrays.asList(
+                new MovieRate("1", 4.5),
+                new MovieRate("2", 3.8),
+                new MovieRate("3", 4.2),
+                new MovieRate("4", 4.0),
+                new MovieRate("5", 3.5)
+        );
+        List<Movie> movies = Arrays.asList(
+                new Movie("1", "Movie 1", 2021, Arrays.asList("Action")),
+                new Movie("2", "Movie 2", 2021, Arrays.asList("Action")),
+                new Movie("3", "Movie 3", 2021, Arrays.asList("Action")),
+                new Movie("4", "Movie 4", 2021, Arrays.asList("Action")),
+                new Movie("5", "Movie 5", 2021, Arrays.asList("Action"))
+        );
+        when(movieRatingRepository.findMoviesWithAverageRatingByYear(year)).thenReturn(movieRates);
+        when(movieRepository.findById(eq("1"))).thenReturn(Optional.of(movies.get(0)));
+        when(movieRepository.findById(eq("2"))).thenReturn(Optional.of(movies.get(1)));
+        when(movieRepository.findById(eq("3"))).thenReturn(Optional.of(movies.get(2)));
+        when(movieRepository.findById(eq("4"))).thenReturn(Optional.of(movies.get(3)));
+        when(movieRepository.findById(eq("5"))).thenReturn(Optional.of(movies.get(4)));
+
+        // Act
+        List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingYear(year);
+
+        // Assert
+        assertEquals(1, genreRates.size());
+        // Add more assertions based on your expected results
+    }
+
+    @Test
+    public void testGetGenreFrequencyWithRatingsIncludingGenre() {
+        // Arrange
+        String genre = "Action";
+        List<MovieRate> movieRates = Arrays.asList(
+                new MovieRate("1", 4.5),
+                new MovieRate("2", 3.8),
+                new MovieRate("3", 4.2),
+                new MovieRate("4", 4.0),
+                new MovieRate("5", 3.5)
+        );
+        List<Movie> movies = Arrays.asList(
+                new Movie("1", "Movie 1", 2021, Arrays.asList("Action")),
+                new Movie("2", "Movie 2", 2021, Arrays.asList("Action")),
+                new Movie("3", "Movie 3", 2021, Arrays.asList("Action")),
+                new Movie("4", "Movie 4", 2021, Arrays.asList("Action")),
+                new Movie("5", "Movie 5", 2021, Arrays.asList("Action"))
+        );
+        when(movieRatingRepository.findMoviesWithAverageRatingByGenre(genre)).thenReturn(movieRates);
+        when(movieRepository.findById(eq("1"))).thenReturn(Optional.of(movies.get(0)));
+        when(movieRepository.findById(eq("2"))).thenReturn(Optional.of(movies.get(1)));
+        when(movieRepository.findById(eq("3"))).thenReturn(Optional.of(movies.get(2)));
+        when(movieRepository.findById(eq("4"))).thenReturn(Optional.of(movies.get(3)));
+        when(movieRepository.findById(eq("5"))).thenReturn(Optional.of(movies.get(4)));
+
+        // Act
+        List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingGenre(genre);
+
+        // Assert
+        assertEquals(1, genreRates.size());
+        // Add more assertions based on your expected results
+    }
+
+    @Test
+    void testComparator() {
+        // Arrange
+        GenreRate genreRate1 = new GenreRate(Arrays.asList("Animation"), 4.5, 5);
+        GenreRate genreRate2 = new GenreRate(Arrays.asList("Action"), 4.0, 5);
+
+        // Act
+        int result = GFAService.customcomparator.compare(genreRate1, genreRate2);
+
+        // Assert
+        assertEquals(-1, result);
+    }
+
+    @Test
+    void testComparator2() {
+        List<GenreRate> genreRates = new ArrayList<>();
+        genreRates.add(new GenreRate(Arrays.asList("Drama", "Sci-Fi"), 4.0, 5));
+        genreRates.add(new GenreRate(Arrays.asList("Animation"), 4.5, 5));
+        genreRates.add(new GenreRate(Arrays.asList("Action", "Animation"), 4.0, 6));
+        genreRates.add(new GenreRate(Arrays.asList("Drama"), 2.8, 87));
+        genreRates.add(new GenreRate(Arrays.asList("Comedy"), 1.0, 3));
+        genreRates.add(new GenreRate(Arrays.asList("Action"), 4.2, 1));
+        genreRates.add(new GenreRate(Arrays.asList("Action"), 4.7, 2));
+        genreRates.add(new GenreRate(Arrays.asList("Action"), 4.0, 6));
+        genreRates.add(new GenreRate(Arrays.asList("Comedy"), 4.0, 6));
+
+        List<GenreRate> expected = new ArrayList<>();
+        expected.add(new GenreRate(Arrays.asList("Drama"), 2.8, 87));
+        expected.add(new GenreRate(Arrays.asList("Action"), 4.0, 6));
+        expected.add(new GenreRate(Arrays.asList("Comedy"), 4.0, 6));
+        expected.add(new GenreRate(Arrays.asList("Action", "Animation"), 4.0, 6));
+        expected.add(new GenreRate(Arrays.asList("Animation"), 4.5, 5));
+        expected.add(new GenreRate(Arrays.asList("Drama", "Sci-Fi"), 4.0, 5));
+        expected.add(new GenreRate(Arrays.asList("Comedy"), 1.0, 3));
+        expected.add(new GenreRate(Arrays.asList("Action"), 4.2, 1));
+        expected.add(new GenreRate(Arrays.asList("Action"), 4.7, 2));
+
+        genreRates.sort(GFAService.customcomparator);
+
+        assertEquals(9, genreRates.size());
+        assertEquals(genreRates, expected);
+    }
 }
-*/

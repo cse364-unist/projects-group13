@@ -31,7 +31,7 @@ public class GFAService {
         this.movieRepository = movieRepository;
     }
 
-    private static Comparator<GenreRate> customcomparator = new Comparator<GenreRate>() { 
+    public static Comparator<GenreRate> customcomparator = new Comparator<GenreRate>() { 
         @Override
         public int compare(GenreRate o1, GenreRate o2) {
             if (o1.getFrequency() > o2.getFrequency()) return -1;
