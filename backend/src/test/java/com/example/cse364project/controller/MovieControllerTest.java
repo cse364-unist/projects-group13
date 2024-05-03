@@ -277,6 +277,28 @@ public class MovieControllerTest {
     }
 
     @Test
+    void testGetMovieById2() throws Exception {
+        // Mock movie data
+        Movie movie = new Movie("2", "Movie 2", 2021, Arrays.asList("Action", "Thriller"));
+
+        // Mock movie service
+        when(movieService.getMovieById(anyString())).thenReturn(movie);
+
+        // Perform GET request
+        mockMvc.perform(get("/movies/{id}", "2")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("2"))
+                .andExpect(jsonPath("$.title").value("Movie 2"))
+                .andExpect(jsonPath("$.year").value(2021))
+                .andExpect(jsonPath("$.genres[0]").value("Action"))
+                .andExpect(jsonPath("$.genres[1]").value("Thriller"));
+
+        // Verify movie service method is called
+        verify(movieService, times(1)).getMovieById(eq("2"));
+    }
+
+    @Test
     void testAddMovie() throws Exception {
         // Mock movie data
         Movie movie = new Movie("1", "Movie 1", 2021, Arrays.asList("Action", "Thriller"));
@@ -292,6 +314,30 @@ public class MovieControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.title").value("Movie 1"))
+                .andExpect(jsonPath("$.year").value(2021))
+                .andExpect(jsonPath("$.genres[0]").value("Action"))
+                .andExpect(jsonPath("$.genres[1]").value("Thriller"));
+
+        // Verify movie service method is called
+        verify(movieService, times(1)).addMovie(any(Movie.class));
+    }
+
+    @Test
+    void testAddMovie2() throws Exception {
+        // Mock movie data
+        Movie movie = new Movie("2", "Movie 2", 2021, Arrays.asList("Action", "Thriller"));
+
+        // Mock movie service
+        when(movieService.addMovie(any(Movie.class))).thenReturn(movie);
+
+        // Perform POST request
+        mockMvc.perform(post("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"2\",\"title\":\"Movie 2\",\"year\":2021,\"genre\":[\"Action\",\"Thriller\"]}")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("2"))
+                .andExpect(jsonPath("$.title").value("Movie 2"))
                 .andExpect(jsonPath("$.year").value(2021))
                 .andExpect(jsonPath("$.genres[0]").value("Action"))
                 .andExpect(jsonPath("$.genres[1]").value("Thriller"));
@@ -325,6 +371,30 @@ public class MovieControllerTest {
     }
 
     @Test
+    void testUpdateMovie2() throws Exception {
+        // Mock movie data
+        Movie movie = new Movie("2", "Movie 2", 2021, Arrays.asList("Action", "Thriller"));
+
+        // Mock movie service
+        when(movieService.updateMovie(anyString(), any(Movie.class))).thenReturn(movie);
+
+        // Perform PUT request
+        mockMvc.perform(put("/movies/{id}", "2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"2\",\"title\":\"Movie 2\",\"year\":2021,\"genre\":[\"Action\",\"Thriller\"]}")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("2"))
+                .andExpect(jsonPath("$.title").value("Movie 2"))
+                .andExpect(jsonPath("$.year").value(2021))
+                .andExpect(jsonPath("$.genres[0]").value("Action"))
+                .andExpect(jsonPath("$.genres[1]").value("Thriller"));
+
+        // Verify movie service method is called
+        verify(movieService, times(1)).updateMovie(eq("2"), any(Movie.class));
+    }
+
+    @Test
     void testDeleteMovie() throws Exception {
         // Perform DELETE request
         mockMvc.perform(delete("/movies/{id}", "1")
@@ -333,6 +403,17 @@ public class MovieControllerTest {
 
         // Verify movie service method is called
         verify(movieService, times(1)).deleteMovie(eq("1"));
+    }
+
+    @Test
+    void testDeleteMovie2() throws Exception {
+        // Perform DELETE request
+        mockMvc.perform(delete("/movies/{id}", "2")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        // Verify movie service method is called
+        verify(movieService, times(1)).deleteMovie(eq("2"));
     }
 
     @Test
@@ -357,5 +438,29 @@ public class MovieControllerTest {
 
         // Verify movie service method is called
         verify(movieService, times(1)).patchMovie(eq("1"), any(Movie.class));
+    }
+
+    @Test
+    void testPatchMovie2() throws Exception {
+        // Mock movie data
+        Movie movie = new Movie("2", "Movie 2", 2021, Arrays.asList("Action", "Thriller"));
+
+        // Mock movie service
+        when(movieService.patchMovie(anyString(), any(Movie.class))).thenReturn(movie);
+
+        // Perform PATCH request
+        mockMvc.perform(patch("/movies/{id}", "2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"2\",\"title\":\"Movie 2\",\"year\":2021,\"genre\":[\"Action\",\"Thriller\"]}")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("2"))
+                .andExpect(jsonPath("$.title").value("Movie 2"))
+                .andExpect(jsonPath("$.year").value(2021))
+                .andExpect(jsonPath("$.genres[0]").value("Action"))
+                .andExpect(jsonPath("$.genres[1]").value("Thriller"));
+
+        // Verify movie service method is called
+        verify(movieService, times(1)).patchMovie(eq("2"), any(Movie.class));
     }
 }
