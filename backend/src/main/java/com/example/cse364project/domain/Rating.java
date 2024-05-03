@@ -77,10 +77,10 @@ public class Rating {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rating rating = (Rating) o;
-        return movieId == rating.movieId &&
-                userId == rating.userId &&
-                rate == rating.rate &&
-                timestamp == rating.timestamp &&
+        return Objects.equals(movieId, rating.movieId) &&
+                Objects.equals(userId, rating.userId) &&
+                Objects.equals(rate, rating.rate) &&
+                Objects.equals(timestamp, rating.timestamp)&&
                 Objects.equals(id, rating.id);
     }
 

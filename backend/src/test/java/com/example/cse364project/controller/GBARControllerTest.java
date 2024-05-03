@@ -88,6 +88,7 @@ public class GBARControllerTest {
                         "}"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+    
     @Test
     public void testRecommendActor2() throws Exception {
         List<String> movies1 = Arrays.asList("Howl's Moving Castle", "Spirited Away");

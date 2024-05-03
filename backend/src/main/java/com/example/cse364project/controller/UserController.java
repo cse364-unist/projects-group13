@@ -58,6 +58,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<EntityModel<User>> addUser(@RequestBody User user) {
+        if (user == null)
+            return ResponseEntity.badRequest().build();
         User newUser = userService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(EntityModel.of(newUser));
     }
