@@ -148,7 +148,7 @@ public class LoadDatabase implements CommandLineRunner {
             }
 
             if (genreIndex == -1) {
-                log.info("cannot find genre : " + parts.toString());
+                // log.info("cannot find genre : " + parts.toString());
                 continue;
             }
 
@@ -162,7 +162,7 @@ public class LoadDatabase implements CommandLineRunner {
             }
 
             // actor that has name is aleady exist
-            if (existIndex >= 0 && existActor != null) {
+            if (existIndex >= 0) {
 
                 existActor.getTitles().add(parts[0]); // add movie title in Actor
                 existActor.getCount()[genreIndex] += 1; // count up

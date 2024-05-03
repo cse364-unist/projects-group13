@@ -47,7 +47,7 @@ public class GFAController {
         return ResponseEntity.ok(collectionModel);
     }
 
-    @GetMapping("/{genre}")
+    @GetMapping("genre/{genre}")
     public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingGenre(@PathVariable String genre) {
         List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingGenre(genre);
 
