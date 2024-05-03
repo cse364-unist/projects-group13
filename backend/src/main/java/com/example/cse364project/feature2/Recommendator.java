@@ -8,15 +8,17 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.example.cse364project.domain.Actor;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 
+@Service
 public class Recommendator {
     // logger
-    private static final Logger log = LoggerFactory.getLogger(Recommendator.class);
+    // private static final Logger log = LoggerFactory.getLogger(Recommendator.class);
 
     /**
      * Recommend some actors that has higher cosine similarity with request
