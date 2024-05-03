@@ -52,12 +52,24 @@ public class RatingTest {
         Rating rating1 = new Rating("123", "456", 5, "2022-01-01");
         Rating rating2 = new Rating("123", "456", 5, "2022-01-01");
         Rating rating3 = new Rating("789", "012", 4, "2022-02-01");
+        Rating rating4 = new Rating("789", "012", 2, "2022-02-01");
+        Rating rating5 = new Rating("789", "012", 4, "2022-03-01");
+        Rating rating6 = new Rating("123", "456", 5, "2022-01-01");
+        Rating rating7 = new Rating("432", "456", 5, "2022-01-01");
+        Rating rating8 = new Rating("432", "23", 5, "2022-01-01");
+        rating6.setId("42");
 
         Assertions.assertEquals(rating2, rating2);
         Assertions.assertNotEquals(rating1, null);
+        Assertions.assertNotEquals(rating1, new ArrayList<>());
 
         Assertions.assertEquals(rating1, rating2);
-        Assertions.assertNotEquals(rating1, rating3);
+        Assertions.assertNotEquals(rating1, rating3); // different movieId, userId, rate, timestamp 
+        Assertions.assertNotEquals(rating4, rating3); // different rate
+        Assertions.assertNotEquals(rating5, rating3); // different timestamp
+        Assertions.assertNotEquals(rating6, rating1); // different id
+        Assertions.assertNotEquals(rating7, rating1); // different movieId
+        Assertions.assertNotEquals(rating8, rating1); // different userId
 
         Assertions.assertEquals(rating1.hashCode(), rating2.hashCode());
         Assertions.assertNotEquals(rating1.hashCode(), rating3.hashCode());
