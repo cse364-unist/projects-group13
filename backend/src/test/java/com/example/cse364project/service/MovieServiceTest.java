@@ -316,7 +316,7 @@ public class MovieServiceTest {
         
         Movie existingMovie = new Movie(id, originaltitle, originalyear, originalgenres);
         
-        Movie newMovie = new Movie(null, null, null, null); // All fields are null or 0
+        Movie newMovie = new Movie(null, null, null, null);
         when(movieRepository.findById(id)).thenReturn(Optional.of(existingMovie));
         when(movieRepository.save(existingMovie)).thenReturn(existingMovie);
     
@@ -330,5 +330,42 @@ public class MovieServiceTest {
         assertEquals(originalgenres, result.getGenres());
         verify(movieRepository).findById(id);
         verify(movieRepository).save(existingMovie);
+    }
+
+    @Test
+    void addMovie_WhenMovieExists_ShouldUpdateMovie() {
+        // Arrange
+        Movie movie = new Movie("1", "Inception", 2010, List.of("Action", "Thriller"));
+        when(movieRepository.existsById("1")).thenReturn(true);
+        when(movieRepository.findById("1")).thenReturn(Optional.of(movie));
+        when(movieRepository.save(movie)).thenReturn(movie);
+
+        // Act
+        Movie result = movieService.addMovie(movie);
+
+        // Assert
+        verify(movieRepository, times(1)).existsById("1");
+        verify(movieRepository, times(1)).save(movie);
+        assertNotNull(result);
+        assertEquals("Inception", result.getTitle());
+    }
+
+
+
+    @Test
+    void addMovie_WhenMovieDoesNotExist_ShouldSaveNewMovie() {
+        // Arrange
+        Movie movie = new Movie("2", "Avatar", 2009, List.of("Action", "Adventure"));
+        when(movieRepository.existsById("2")).thenReturn(false);
+        when(movieRepository.save(movie)).thenReturn(movie);
+
+        // Act
+        Movie savedMovie = movieService.addMovie(movie);
+
+        // Assert
+        verify(movieRepository, times(1)).existsById("2");
+        verify(movieRepository, times(1)).save(movie);
+        assertNotNull(savedMovie);
+        assertEquals("Avatar", savedMovie.getTitle());
     }
 }

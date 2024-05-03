@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -178,5 +179,47 @@ public class GFAServiceTest {
 
         assertEquals(9, genreRates.size());
         assertEquals(genreRates, expected);
+    }
+
+    @Test
+    void compareByFrequency() {
+        GenreRate gr1 = new GenreRate(Arrays.asList("Action"), 10, 100);
+        GenreRate gr2 = new GenreRate(Arrays.asList("Comedy"), 5, 100);
+        assertTrue(GFAService.customcomparator.compare(gr1, gr2) < 0);
+    }
+
+    @Test
+    void compareByAverageRatingWhenFrequencyEqual() {
+        GenreRate gr1 = new GenreRate(Arrays.asList("Action"), 10, 90);
+        GenreRate gr2 = new GenreRate(Arrays.asList("Comedy"), 10, 95);
+        assertTrue(GFAService.customcomparator.compare(gr1, gr2) > 0);
+    }
+
+    @Test
+    void compareByGenreSizeWhenFrequencyAndRatingEqual() {
+        GenreRate gr1 = new GenreRate(Arrays.asList("Action", "Adventure"), 10, 95);
+        GenreRate gr2 = new GenreRate(Arrays.asList("Comedy"), 10, 95);
+        assertTrue(GFAService.customcomparator.compare(gr1, gr2) > 0);
+    }
+
+    @Test
+    void compareByGenreOrderWhenAllElseEqual() {
+        GenreRate gr1 = new GenreRate(Arrays.asList("Action", "Adventure"), 10, 95);
+        GenreRate gr2 = new GenreRate(Arrays.asList("Adventure", "Comedy"), 10, 95);
+        assertTrue(GFAService.customcomparator.compare(gr1, gr2) > 0);
+    }
+
+    @Test
+    void compareByGenreListSizeWhenOtherFactorsEqual() {
+        GenreRate gr1 = new GenreRate(Arrays.asList("Action"), 10, 95);
+        GenreRate gr2 = new GenreRate(Arrays.asList("Action", "Comedy"), 10, 95);
+        assertTrue(GFAService.customcomparator.compare(gr1, gr2) < 0);
+    }
+
+    @Test
+    void compareGenresWhenFrequenciesAndRatingsAreEqualAndGenresAreIdentical() {
+        GenreRate gr1 = new GenreRate(Arrays.asList("Action", "Comedy"), 10, 95);
+        GenreRate gr2 = new GenreRate(Arrays.asList("Action", "Comedy"), 10, 95);
+        assertEquals(0, GFAService.customcomparator.compare(gr1, gr2));
     }
 }
