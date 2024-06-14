@@ -8,8 +8,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-const data = [
+/**
+ * data example
+ * const data = [
   { name: "Option A", person: 10 },
   { name: "Option B", person: 52 },
   { name: "Option C", person: 42 },
@@ -17,9 +18,10 @@ const data = [
   { name: "Option E", person: 12 },
   { name: "Option F", person: 46 },
   { name: "Option G", person: 34 },
-];
+  ];
+ */
 
-const BarGraph = () => {
+const BarGraph = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart

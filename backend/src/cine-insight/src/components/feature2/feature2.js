@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-
-import Header from "../Header";
-import Feature2Actor from "./feature2actor";
+import { useNavigate } from "react-router-dom";
 
 const Feature2 = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [choices, setChoices] = useState([]);
-  const [showActorScreen, setShowActorScreen] = useState(false);
 
   const handleGenreToggle = (genre) => {
     setSelectedGenres((prevGenres) => {
@@ -19,6 +16,8 @@ const Feature2 = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -29,11 +28,11 @@ const Feature2 = () => {
   };
 
   const handleShowActorScreen = () => {
-    setShowActorScreen(true);
+    navigate("/gbar/result");
   };
 
   return (
-    <div className="bg-gray-100 text-gray-900 font-roboto">
+    <div className="min-h-screen bg-gray-100 text-gray-900 font-roboto">
       <main className="container mx-auto py-8 px-4">
         <section id="feature2" className={"mb-8"}>
           <h2 className="text-2xl font-bold mb-4">Feature 2</h2>
@@ -107,7 +106,6 @@ const Feature2 = () => {
             </div>
           </div>
         </section>
-        {showActorScreen && <Feature2Actor />}
       </main>
     </div>
   );
