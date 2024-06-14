@@ -47,6 +47,18 @@ public class LoadDatabase implements CommandLineRunner {
         this.actorRepository = actorRepository;
     }
 
+    private static int countLines(String filePath) throws IOException {
+        int lines = 0;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            while (reader.readLine() != null) {
+                lines++;
+            }
+        }
+        
+        return lines;
+    }
+
     @Override
     public void run(String... args) throws Exception {
         List<Rating> ratings = readRatings("data/ratings.dat");
@@ -75,8 +87,7 @@ public class LoadDatabase implements CommandLineRunner {
 
     private List<Rating> readRatings(String filename) throws IOException {
         List<Rating> ratings = new ArrayList<>();
-        Path path = Paths.get(filename);
-        long totalCount = Files.lines(path).count();
+        long totalCount = countLines(filename);
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
         try (ProgressBar pb = new ProgressBar("Loading ratings", totalCount)) {
@@ -95,8 +106,7 @@ public class LoadDatabase implements CommandLineRunner {
 
     private List<User> readUsers(String filename) throws IOException {
         List<User> users = new ArrayList<>();
-        Path path = Paths.get(filename);
-        long totalCount = Files.lines(path).count();
+        long totalCount = countLines(filename);
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
         try (ProgressBar pb = new ProgressBar("Loading users", totalCount)) {
@@ -115,8 +125,7 @@ public class LoadDatabase implements CommandLineRunner {
 
     private List<Movie> readMovies(String filename) throws IOException {
         List<Movie> movies = new ArrayList<>();
-        Path path = Paths.get(filename);
-        long totalCount = Files.lines(path).count();
+        long totalCount = countLines(filename);
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
         try(ProgressBar pb = new ProgressBar("Loading movies", totalCount)) {
@@ -149,8 +158,7 @@ public class LoadDatabase implements CommandLineRunner {
     private List<Actor> readActors(String filename) throws CsvValidationException, IOException {
         List<Actor> actors = new ArrayList<>();
 
-        Path path = Paths.get(filename);
-        long totalCount = Files.lines(path).count();
+        long totalCount = countLines(filename);
 
         //CSV reader
         CSVReader csvReader = new CSVReader(new FileReader(filename));
