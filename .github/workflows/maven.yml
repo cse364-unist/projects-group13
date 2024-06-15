@@ -34,4 +34,4 @@ jobs:
         cache: maven
     - name: Build with Maven
       working-directory: backend
-      run: mvn -B package --file pom.xml
+      run: mvn -B -X package --file pom.xml
