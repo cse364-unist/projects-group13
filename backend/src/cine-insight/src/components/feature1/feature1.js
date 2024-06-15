@@ -76,8 +76,8 @@ const Feature1 = () => {
             <section className="mb-6 p-4 bg-blue-100 border border-blue-300 rounded">
               <h4 className="font-bold mb-2 text-lg text-blue-700">Instructions</h4>
               <ul className="list-disc list-inside text-blue-700">
-                <li className="mb-1">It might take a long time. Don't worry about error.</li>
-                <li className="mb-1">You should choose at least 3 genres.</li>
+                <li className="mb-1">It might take more than a minute. Please don't worry; this is not an error.</li>
+                <li className="mb-1">You have to choose at least 3 genres.</li>
                 <li>For test: Animation, Sci-Fi, Thriller</li>
               </ul>
             </section>
