@@ -18,12 +18,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 @Service
 public class PUAService {
-    private static final Logger log = LoggerFactory.getLogger(PUAService.class);
+    //private static final Logger log = LoggerFactory.getLogger(PUAService.class);
 
 
     @Autowired
@@ -47,7 +47,7 @@ public class PUAService {
      * @return `details` A list containing detailed information(includes "users") of the top 5 movies with the highest ratings
      */
     public List<MovieDetail> findTopRatedMoviesByGenre(List<String> genres) {
-        log.info("Finding movies with genres: {}", genres);
+        //log.info("Finding movies with genres: {}", genres);
         // 1. Find movies that match the genre criteria
         Criteria criteria = Criteria.where("genres").all(genres);
         Aggregation findMovies = Aggregation.newAggregation(
@@ -60,7 +60,7 @@ public class PUAService {
                 .map(Movie::getId)
                 .collect(Collectors.toList());
 
-        log.info("Movies found: {}", movies.getMappedResults());
+        //log.info("Movies found: {}", movies.getMappedResults());
 
         // 2. Calculate average ratings for these movies
         Criteria ratingCriteria = Criteria.where("movieId").in(movieIds);
@@ -73,7 +73,7 @@ public class PUAService {
         );
         AggregationResults<MovieAverage> topMovies = mongoTemplate.aggregate(ratingAggregation, "ratings", MovieAverage.class);
 
-        log.info("Top movies: {}", topMovies.getMappedResults());
+        //log.info("Top movies: {}", topMovies.getMappedResults());
 
         // 3. Collect top 5 movies with details
         List<MovieDetail> details = new ArrayList<>();
@@ -89,7 +89,7 @@ public class PUAService {
             details.add(new MovieDetail(movie, ma.getAverageRating(), users));
         }
 
-        log.info("Final movie details: {}", details);
+        //log.info("Final movie details: {}", details);
 
 
         return details;
@@ -104,7 +104,7 @@ public class PUAService {
      * @return `details` A list containing detailed information(includes "users") of the lowest 5 movies with the highest ratings
      */
     public List<MovieDetail> findLowestRatedMoviesByGenre(List<String> genres) {
-        log.info("Finding movies with genres: {}", genres);
+        //log.info("Finding movies with genres: {}", genres);
         // 1. Find movies that match the genre criteria
         Criteria criteria = Criteria.where("genres").all(genres);
         Aggregation findMovies = Aggregation.newAggregation(
@@ -117,7 +117,7 @@ public class PUAService {
                 .map(Movie::getId)
                 .collect(Collectors.toList());
 
-        log.info("Movies found: {}", movies.getMappedResults());
+        //log.info("Movies found: {}", movies.getMappedResults());
 
         // 2. Calculate average ratings for these movies
         Criteria ratingCriteria = Criteria.where("movieId").in(movieIds);
@@ -130,7 +130,7 @@ public class PUAService {
         );
         AggregationResults<MovieAverage> lowestMovies = mongoTemplate.aggregate(ratingAggregation, "ratings", MovieAverage.class);
 
-        log.info("Lowest movies: {}", lowestMovies.getMappedResults());
+        //log.info("Lowest movies: {}", lowestMovies.getMappedResults());
 
         // 3. Collect lowest 5 movies with details
         List<MovieDetail> details = new ArrayList<>();
@@ -146,7 +146,7 @@ public class PUAService {
             details.add(new MovieDetail(movie, ma.getAverageRating(), users));
         }
 
-        log.info("Final movie details: {}", details);
+        //log.info("Final movie details: {}", details);
 
 
         return details;

@@ -161,8 +161,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.gender").value("M"))
                 .andExpect(jsonPath("$.age").value(30))
                 .andExpect(jsonPath("$.occupation").value(1))
-                .andExpect(jsonPath("$.postal").value("12345"))
-                .andDo(print());
+                .andExpect(jsonPath("$.postal").value("12345"));
     }
 
     @Test
@@ -170,8 +169,7 @@ class UserControllerTest {
         when(userService.getUserById("1")).thenReturn(null);
 
         mockMvc.perform(get("/users/1"))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -189,8 +187,7 @@ class UserControllerTest {
             .andExpect(jsonPath("$.gender").value("F"))
             .andExpect(jsonPath("$.age").value(40))
             .andExpect(jsonPath("$.occupation").value(2))
-            .andExpect(jsonPath("$.postal").value("67890"))
-            .andDo(print());
+            .andExpect(jsonPath("$.postal").value("67890"));
     }
 
     @Test
@@ -202,8 +199,7 @@ class UserControllerTest {
         mockMvc.perform(put("/users/{id}", 1)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(user)))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -222,8 +218,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.gender").value("M"))
                 .andExpect(jsonPath("$.age").value(30))
                 .andExpect(jsonPath("$.occupation").value(1))
-                .andExpect(jsonPath("$.postal").value("12345"))
-                .andDo(print());
+                .andExpect(jsonPath("$.postal").value("12345"));
     }
 
     @Test
@@ -231,8 +226,7 @@ class UserControllerTest {
 
         mockMvc.perform(post("/users")
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -250,8 +244,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.gender").value("F"))
                 .andExpect(jsonPath("$.age").value(40))
                 .andExpect(jsonPath("$.occupation").value(2))
-                .andExpect(jsonPath("$.postal").value("67890"))
-                .andDo(print());
+                .andExpect(jsonPath("$.postal").value("67890"));
     }
 
     @Test
@@ -263,8 +256,7 @@ class UserControllerTest {
         mockMvc.perform(patch("/users/{id}", 1)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(user)))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -276,15 +268,13 @@ class UserControllerTest {
         mockMvc.perform(patch("/users/{id}", 1)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(user)))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
     void testDeleteUser() throws Exception {
         mockMvc.perform(delete("/users/{id}", 1))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -292,7 +282,6 @@ class UserControllerTest {
         doNothing().when(userService).deleteUser("1");
 
         mockMvc.perform(delete("/users/{id}", 1))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andExpect(status().isNoContent());
     }
 }

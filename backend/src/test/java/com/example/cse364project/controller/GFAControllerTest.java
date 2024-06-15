@@ -45,7 +45,6 @@ public class GFAControllerTest {
         mockMvc.perform(get("/gfa")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(print())
             .andExpect(jsonPath("$.length()").value(2))
             .andExpect(jsonPath("$.content.length()").value(2))
             .andExpect(jsonPath("$.content[0].genres[0]").value("Action"));
@@ -61,7 +60,6 @@ public class GFAControllerTest {
         mockMvc.perform(get("/gfa")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(print())
             .andExpect(jsonPath("$.length()").value(2))
             .andExpect(jsonPath("$.content.length()").value(1))
             .andExpect(jsonPath("$.content[0].genres[0]").value("Action"));
