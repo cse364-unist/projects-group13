@@ -7,15 +7,17 @@ import com.example.cse364project.repository.MovieRepository;
 import com.example.cse364project.repository.RatingRepository;
 import com.example.cse364project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -24,7 +26,6 @@ import org.slf4j.LoggerFactory;
 @Service
 public class PUAService {
     private static final Logger log = LoggerFactory.getLogger(PUAService.class);
-
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -44,8 +45,7 @@ public class PUAService {
         // Step 1: Find movies that match the genre criteria
         Criteria criteria = Criteria.where("genres").all(genres);
         Aggregation findMovies = Aggregation.newAggregation(
-                Aggregation.match(criteria),
-                Aggregation.lookup("ratings", "id", "movieId", "ratings")
+                Aggregation.match(criteria)
         );
 
         AggregationResults<Movie> movies = mongoTemplate.aggregate(findMovies, "movies", Movie.class);
@@ -55,7 +55,38 @@ public class PUAService {
 
         log.info("Movies found: {}", movies.getMappedResults());
 
-        // Step 2: Calculate average ratings for these movies
+        // Step 2: Find ratings for these movies and select top 2 movies by the number of ratings
+        List<Rating> allRatings = ratingRepository.findByMovieIdIn(movieIds);
+        Map<String, Long> ratingCounts = allRatings.stream()
+                .collect(Collectors.groupingBy(Rating::getMovieId, Collectors.counting()));
+
+        List<String> topMovieIds = ratingCounts.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(2)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        log.info("Top 2 movies selected: {}", topMovieIds);
+
+        // Step 3: Calculate average ratings and user demographics in parallel
+        CompletableFuture<Double> averageRatingFuture = CompletableFuture.supplyAsync(() -> calculateAverageRating(topMovieIds));
+        CompletableFuture<UserDemographics> highRatingsFuture = CompletableFuture.supplyAsync(() -> getUserDemographics(topMovieIds, true));
+        CompletableFuture<UserDemographics> lowRatingsFuture = CompletableFuture.supplyAsync(() -> getUserDemographics(topMovieIds, false));
+
+        try {
+            double averageRating = averageRatingFuture.get();
+            UserDemographics highRatings = highRatingsFuture.get();
+            UserDemographics lowRatings = lowRatingsFuture.get();
+
+            return new MovieRatingAnalysis(averageRating, highRatings, lowRatings);
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("Error during analysis: ", e);
+            Thread.currentThread().interrupt();
+            return new MovieRatingAnalysis(0, new UserDemographics(), new UserDemographics());
+        }
+    }
+
+    private double calculateAverageRating(List<String> movieIds) {
         Criteria ratingCriteria = Criteria.where("movieId").in(movieIds);
         Aggregation ratingAggregation = Aggregation.newAggregation(
                 Aggregation.match(ratingCriteria),
@@ -64,31 +95,27 @@ public class PUAService {
         );
         AggregationResults<MovieAverage> averageRatings = mongoTemplate.aggregate(ratingAggregation, "ratings", MovieAverage.class);
 
-        double totalAverageRating = averageRatings.getMappedResults().stream()
+        return averageRatings.getMappedResults().stream()
                 .mapToDouble(MovieAverage::getAverageRating)
                 .average()
                 .orElse(0.0);
+    }
 
-        log.info("Average rating: {}", totalAverageRating);
-
-        // Step 3: Collect user demographics based on rating scores
+    private UserDemographics getUserDemographics(List<String> movieIds, boolean highRating) {
         List<Rating> ratings = ratingRepository.findByMovieIdIn(movieIds);
 
-        UserDemographics highRatings = new UserDemographics();
-        UserDemographics lowRatings = new UserDemographics();
+        UserDemographics demographics = new UserDemographics();
 
         for (Rating rating : ratings) {
-            User user = userRepository.findById(rating.getUserId()).orElse(null);
-            if (user == null) continue;
-
-            if (rating.getRate() >= 4) {
-                highRatings.addUser(user);
-            } else if (rating.getRate() <= 3) {
-                lowRatings.addUser(user);
+            if ((highRating && rating.getRate() >= 4) || (!highRating && rating.getRate() <= 3)) {
+                User user = userRepository.findById(rating.getUserId()).orElse(null);
+                if (user != null) {
+                    demographics.addUser(user);
+                }
             }
         }
 
-        return new MovieRatingAnalysis(totalAverageRating, highRatings, lowRatings);
+        return demographics;
     }
 
     public static class UserDemographics {
@@ -157,7 +184,6 @@ public class PUAService {
         }
     }
 
-
     /**
      * Finds and returns the top five "highest rated movies" in the specified genres.
      * After searching the database for movies that fit the genre,
@@ -210,7 +236,6 @@ public class PUAService {
         }
 
         log.info("Final movie details: {}", details);
-
 
         return details;
     }
@@ -268,23 +293,13 @@ public class PUAService {
 
         log.info("Final movie details: {}", details);
 
-
         return details;
     }
 
-    /**
-     * This class contains average rating information for movies.
-     * Stores each movie ID and the average rating for that movie.
-     *
-     * @param `movieId` Unique ID of the movie
-     * @param `averageRating` Average rating of the movie
-     */
     public static class MovieAverage {
-
         @Field("_id")
         private String movieId;
         private double averageRating;
-
 
         public MovieAverage(String movieId, double averageRating) {
             this.movieId = movieId;
@@ -312,14 +327,6 @@ public class PUAService {
         }
     }
 
-    /**
-     * This class contains detailed information about the movie.
-     * Includes basic information about the movie, average rating, and a list of users who rated the movie.
-     *
-     * @param `movie` movie information
-     * @param `averageRating` Average rating of the movie
-     * @param `users` List of users who rated the movie
-     */
     public static class MovieDetail {
         private Movie movie;
         private double averageRating;
@@ -356,7 +363,4 @@ public class PUAService {
                     '}';
         }
     }
-
-
-
 }

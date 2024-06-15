@@ -22,8 +22,8 @@ const Feature1 = () => {
   const handleAnalysis = async (e) => {
     e.preventDefault();
 
-    if (selectedGenres.length < 4) {
-      alert("You should choose at least 4 genres.");
+    if (selectedGenres.length < 3) {
+      alert("You should choose at least 3 genres.");
       return;
     }
 
@@ -76,9 +76,9 @@ const Feature1 = () => {
             <section className="mb-6 p-4 bg-blue-100 border border-blue-300 rounded">
               <h4 className="font-bold mb-2 text-lg text-blue-700">Instructions</h4>
               <ul className="list-disc list-inside text-blue-700">
-                <li className="mb-1">It might take a long time. Don't worry.</li>
-                <li className="mb-1">You should choose at least 4 genres.</li>
-                <li>For test: Try selecting Action, Adventure, Animation, and Sci-Fi.</li>
+                <li className="mb-1">It might take a long time. Don't worry about error.</li>
+                <li className="mb-1">You should choose at least 3 genres.</li>
+                <li>For test: Animation, Sci-Fi, Thriller</li>
               </ul>
             </section>
 
@@ -115,7 +115,7 @@ const Feature1 = () => {
                     onClick={handleAnalysis}
                     disabled={loading}
                 >
-                  {loading ? "Loading..." : "Analysis"}
+                  {loading ? "Analyzing..." : "Analysis"}
                 </button>
               </div>
             </div>
