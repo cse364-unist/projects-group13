@@ -38,6 +38,126 @@ public class PUAService {
     @Autowired
     private UserRepository userRepository;
 
+    public MovieRatingAnalysis getMovieRatingAnalysis(List<String> genres) {
+        log.info("Analyzing movies with genres: {}", genres);
+
+        // Step 1: Find movies that match the genre criteria
+        Criteria criteria = Criteria.where("genres").all(genres);
+        Aggregation findMovies = Aggregation.newAggregation(
+                Aggregation.match(criteria),
+                Aggregation.lookup("ratings", "id", "movieId", "ratings")
+        );
+
+        AggregationResults<Movie> movies = mongoTemplate.aggregate(findMovies, "movies", Movie.class);
+        List<String> movieIds = movies.getMappedResults().stream()
+                .map(Movie::getId)
+                .collect(Collectors.toList());
+
+        log.info("Movies found: {}", movies.getMappedResults());
+
+        // Step 2: Calculate average ratings for these movies
+        Criteria ratingCriteria = Criteria.where("movieId").in(movieIds);
+        Aggregation ratingAggregation = Aggregation.newAggregation(
+                Aggregation.match(ratingCriteria),
+                Aggregation.group("movieId")
+                        .avg("rate").as("averageRating")
+        );
+        AggregationResults<MovieAverage> averageRatings = mongoTemplate.aggregate(ratingAggregation, "ratings", MovieAverage.class);
+
+        double totalAverageRating = averageRatings.getMappedResults().stream()
+                .mapToDouble(MovieAverage::getAverageRating)
+                .average()
+                .orElse(0.0);
+
+        log.info("Average rating: {}", totalAverageRating);
+
+        // Step 3: Collect user demographics based on rating scores
+        List<Rating> ratings = ratingRepository.findByMovieIdIn(movieIds);
+
+        UserDemographics highRatings = new UserDemographics();
+        UserDemographics lowRatings = new UserDemographics();
+
+        for (Rating rating : ratings) {
+            User user = userRepository.findById(rating.getUserId()).orElse(null);
+            if (user == null) continue;
+
+            if (rating.getRate() >= 4) {
+                highRatings.addUser(user);
+            } else if (rating.getRate() <= 3) {
+                lowRatings.addUser(user);
+            }
+        }
+
+        return new MovieRatingAnalysis(totalAverageRating, highRatings, lowRatings);
+    }
+
+    public static class UserDemographics {
+        private Map<Character, Integer> genderCount = new HashMap<>();
+        private Map<Integer, Integer> ageCount = new HashMap<>();
+        private Map<Integer, Integer> occupationCount = new HashMap<>();
+
+        public void addUser(User user) {
+            genderCount.put(user.getGender(), genderCount.getOrDefault(user.getGender(), 0) + 1);
+            ageCount.put(user.getAge(), ageCount.getOrDefault(user.getAge(), 0) + 1);
+            occupationCount.put(user.getOccupation(), occupationCount.getOrDefault(user.getOccupation(), 0) + 1);
+        }
+
+        public Map<Character, Integer> getGenderCount() {
+            return genderCount;
+        }
+
+        public Map<Integer, Integer> getAgeCount() {
+            return ageCount;
+        }
+
+        public Map<Integer, Integer> getOccupationCount() {
+            return occupationCount;
+        }
+
+        @Override
+        public String toString() {
+            return "UserDemographics{" +
+                    "genderCount=" + genderCount +
+                    ", ageCount=" + ageCount +
+                    ", occupationCount=" + occupationCount +
+                    '}';
+        }
+    }
+
+    public static class MovieRatingAnalysis {
+        private double averageRating;
+        private UserDemographics highRatingUsers;
+        private UserDemographics lowRatingUsers;
+
+        public MovieRatingAnalysis(double averageRating, UserDemographics highRatingUsers, UserDemographics lowRatingUsers) {
+            this.averageRating = averageRating;
+            this.highRatingUsers = highRatingUsers;
+            this.lowRatingUsers = lowRatingUsers;
+        }
+
+        public double getAverageRating() {
+            return averageRating;
+        }
+
+        public UserDemographics getHighRatingUsers() {
+            return highRatingUsers;
+        }
+
+        public UserDemographics getLowRatingUsers() {
+            return lowRatingUsers;
+        }
+
+        @Override
+        public String toString() {
+            return "MovieRatingAnalysis{" +
+                    "averageRating=" + averageRating +
+                    ", highRatingUsers=" + highRatingUsers +
+                    ", lowRatingUsers=" + lowRatingUsers +
+                    '}';
+        }
+    }
+
+
     /**
      * Finds and returns the top five "highest rated movies" in the specified genres.
      * After searching the database for movies that fit the genre,
@@ -236,5 +356,7 @@ public class PUAService {
                     '}';
         }
     }
+
+
 
 }
