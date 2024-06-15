@@ -40,7 +40,7 @@ public class PUAService {
     private UserRepository userRepository;
 
     public MovieRatingAnalysis getMovieRatingAnalysis(List<String> genres) {
-        log.info("Analyzing movies with genres: {}", genres);
+        //log.info("Analyzing movies with genres: {}", genres);
 
         // Step 1: Find movies that match the genre criteria
         Criteria criteria = Criteria.where("genres").all(genres);
@@ -53,7 +53,7 @@ public class PUAService {
                 .map(Movie::getId)
                 .collect(Collectors.toList());
 
-        log.info("Movies found: {}", movies.getMappedResults());
+        //log.info("Movies found: {}", movies.getMappedResults());
 
         // Step 2: Find ratings for these movies and select top 2 movies by the number of ratings
         List<Rating> allRatings = ratingRepository.findByMovieIdIn(movieIds);
@@ -66,7 +66,7 @@ public class PUAService {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        log.info("Top 2 movies selected: {}", topMovieIds);
+        //log.info("Top 2 movies selected: {}", topMovieIds);
 
         // Step 3: Calculate average ratings and user demographics in parallel
         CompletableFuture<Double> averageRatingFuture = CompletableFuture.supplyAsync(() -> calculateAverageRating(topMovieIds));
@@ -80,7 +80,7 @@ public class PUAService {
 
             return new MovieRatingAnalysis(averageRating, highRatings, lowRatings);
         } catch (InterruptedException | ExecutionException e) {
-            log.error("Error during analysis: ", e);
+            //log.error("Error during analysis: ", e);
             Thread.currentThread().interrupt();
             return new MovieRatingAnalysis(0, new UserDemographics(), new UserDemographics());
         }
