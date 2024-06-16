@@ -28,7 +28,6 @@ const Feature2 = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [choices, setChoices] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -107,7 +106,9 @@ const Feature2 = () => {
     <div className="min-h-screen bg-gray-100 text-gray-900 font-roboto">
       <main className="container mx-auto py-8 px-4">
         <section id="feature2" className={"mb-8"}>
-          <h2 className="text-2xl font-bold mb-4">Genre-Based Actor Recommendation</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            Genre-Based Actor Recommendation
+          </h2>
           <div className="flex">
             <div className="w-1/3">
               <h3 className="font-bold mb-2">Genre</h3>
