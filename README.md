@@ -12,13 +12,16 @@ Cine Insight provides you more _insights_ to make a good movie, so that the tale
 
 ## How to use?
 
-The main page allows you to easily navigate through various features. Click on the links to access the detailed pages for each feature.
+The main page allows you to easily navigate through three features. Click on the links to access the detailed pages for each feature.
+
+<img src="./assets/feature_usage/main.png" width=400/>
+
+On each feature description, you can find detailed instructions and information on how to use the specific feature. Select the desired feature to gain in-depth analysis and customized insights.
 
 - [Feature 1: Preferred User Analysis](#feature-1-preferred-user-analysis)
 - [Feature 2: Genre-Based Actor Recommendation](#feature-2-genre-based-actor-recommendation)
 - [Feature 3: Genre Frequency Analysis](#feature-3-genre-frequency-analysis)
 
-On each feature page, you can find detailed instructions and information on how to use the specific feature. Select the desired feature to gain in-depth analysis and customized insights.
 
 ### Feature 1: Preferred User Analysis
 
@@ -31,8 +34,7 @@ Analyze movies with high ratings within a specific genre to determine audience p
 
 **How to Use This Feature?:**
 
-![feat1](https://github.com/cse364-unist/projects-group13/assets/64516749/62b5a8a7-6daa-4d65-a457-685929ad35dd)
-
+![feat1](./assets/feature_usage/feat1.jpg)
 1. Select at least 3 genres. 
 2. Check the Selected Genres and press the Analysis button. 
 3. After waiting a few minutes, you can review the analyzed data!
