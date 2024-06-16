@@ -60,21 +60,21 @@ You can use this GBAR when planning movies or can use if you want more actors th
 4. You can get 5 recommendations and statistics page!
 
 **Image for explanation:**
-![feat2](./assets/feature_usage/gbar_example_1.JPG)
+![feat2](./assets/feature_usage/gbar_example_1.png)
 
 You can just select genres as you want!
 
-![feat2](./assets/feature_usage/gbar_example_2.JPG)
+![feat2](./assets/feature_usage/gbar_example_2.png)
 
 You can add some actors for better recommendation.
 
-![feat2](./assets/feature_usage/gbar_example_3.JPG)
-![feat2](./assets/feature_usage/gbar_example_4.JPG)
+![feat2](./assets/feature_usage/gbar_example_3.png)
+![feat2](./assets/feature_usage/gbar_example_4.png)
 
 If you add incorrect actor, error occurs.
 Don't worry! You can do again with different names :)
 
-![feat2](./assets/feature_usage/gbar_example_5.JPG)
+![feat2](./assets/feature_usage/gbar_example_5.png)
 
 If you click the "Show me!" button, you can see result page!
 
