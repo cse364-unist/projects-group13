@@ -42,7 +42,7 @@ public class PUAService {
     public MovieRatingAnalysis getMovieRatingAnalysis(List<String> genres) {
         //log.info("Analyzing movies with genres: {}", genres);
 
-        // Step 1: Find movies that match the genre criteria
+        // 1: Find movies that match the genre criteria
         Criteria criteria = Criteria.where("genres").all(genres);
         Aggregation findMovies = Aggregation.newAggregation(
                 Aggregation.match(criteria)
@@ -55,7 +55,7 @@ public class PUAService {
 
         //log.info("Movies found: {}", movies.getMappedResults());
 
-        // Step 2: Find ratings for these movies and select top 2 movies by the number of ratings
+        // 2: Find ratings for these movies and select top 2 movies by the number of ratings
         List<Rating> allRatings = ratingRepository.findByMovieIdIn(movieIds);
         Map<String, Long> ratingCounts = allRatings.stream()
                 .collect(Collectors.groupingBy(Rating::getMovieId, Collectors.counting()));
@@ -68,7 +68,7 @@ public class PUAService {
 
         //log.info("Top 2 movies selected: {}", topMovieIds);
 
-        // Step 3: Calculate average ratings and user demographics in parallel
+        // 3: Calculate average ratings and user demographics
         CompletableFuture<Double> averageRatingFuture = CompletableFuture.supplyAsync(() -> calculateAverageRating(topMovieIds));
         CompletableFuture<UserDemographics> highRatingsFuture = CompletableFuture.supplyAsync(() -> getUserDemographics(topMovieIds, true));
         CompletableFuture<UserDemographics> lowRatingsFuture = CompletableFuture.supplyAsync(() -> getUserDemographics(topMovieIds, false));

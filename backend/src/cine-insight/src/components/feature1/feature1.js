@@ -116,8 +116,6 @@ const Feature1 = () => {
                             <p>No suitable movies found.</p>
                         ) : (
                             <div className="mt-8 p-4 bg-white border">
-                                {" "}
-                                {/* Analysis results 배경 흰색 */}
                                 <h2 className="text-2xl font-bold mb-4">
                                     Analysis Results
                                 </h2>
@@ -128,8 +126,6 @@ const Feature1 = () => {
                                     </p>
                                     <div className="flex flex-wrap mt-4 -mx-2">
                                         <div className="w-full md:w-1/2 lg:w-1/3 bg-white h-auto p-4">
-                                            {" "}
-                                            {/* 그래프 배경 흰색 */}
                                             <h4 className="font-bold mb-2">
                                                 High Rating Users (4-5 stars) -
                                                 Age Distribution
@@ -144,8 +140,6 @@ const Feature1 = () => {
                                             />
                                         </div>
                                         <div className="w-full md:w-1/2 lg:w-1/3 bg-white h-auto p-4 flex items-center justify-center flex-col">
-                                            {" "}
-                                            {/* 그래프 배경 흰색 */}
                                             <h4 className="font-bold mb-2">
                                                 High Rating Users (4-5 stars) -
                                                 Gender Distribution
@@ -160,8 +154,6 @@ const Feature1 = () => {
                                             />
                                         </div>
                                         <div className="w-full md:w-1/2 lg:w-1/3 bg-white h-auto p-4">
-                                            {" "}
-                                            {/* 그래프 배경 흰색 */}
                                             <h4 className="font-bold mb-2">
                                                 High Rating Users (4-5 stars) -
                                                 Occupation Distribution
@@ -176,8 +168,6 @@ const Feature1 = () => {
                                             />
                                         </div>
                                         <div className="w-full md:w-1/2 lg:w-1/3 bg-white h-auto p-4">
-                                            {" "}
-                                            {/* 그래프 배경 흰색 */}
                                             <h4 className="font-bold mb-2">
                                                 Low Rating Users (1-3 stars) -
                                                 Age Distribution
@@ -192,8 +182,6 @@ const Feature1 = () => {
                                             />
                                         </div>
                                         <div className="w-full md:w-1/2 lg:w-1/3 bg-white h-auto p-4 flex items-center justify-center flex-col">
-                                            {" "}
-                                            {/* 그래프 배경 흰색 */}
                                             <h4 className="font-bold mb-2">
                                                 Low Rating Users (1-3 stars) -
                                                 Gender Distribution
@@ -208,8 +196,6 @@ const Feature1 = () => {
                                             />
                                         </div>
                                         <div className="w-full md:w-1/2 lg:w-1/3 bg-white h-auto p-4">
-                                            {" "}
-                                            {/* 그래프 배경 흰색 */}
                                             <h4 className="font-bold mb-2">
                                                 Low Rating Users (1-3 stars) -
                                                 Occupation Distribution
