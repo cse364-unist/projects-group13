@@ -1,20 +1,34 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Feature2GenreSelection from "./feature2GenreSelection";
+
+const genres = [
+  "Drama",
+  "Adventure",
+  "Action",
+  "Comedy",
+  "Horror",
+  "Biography",
+  "Crime",
+  "Fantasy",
+  "Family",
+  "Sci-Fi",
+  "Animation",
+  "Romance",
+  "Music",
+  "Western",
+  "Thriller",
+  "History",
+  "Mystery",
+  "Sport",
+  "Musical",
+];
 
 const Feature2 = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [choices, setChoices] = useState([]);
-
-  const handleGenreToggle = (genre) => {
-    setSelectedGenres((prevGenres) => {
-      if (prevGenres.includes(genre)) {
-        return prevGenres.filter((g) => g !== genre);
-      } else {
-        return [...prevGenres, genre];
-      }
-    });
-  };
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,13 +36,71 @@ const Feature2 = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleAddChoice = () => {
-    setChoices((prevChoices) => [...prevChoices, searchTerm]);
+  const handleAddChoice = async (e) => {
+    e.preventDefault();
+
+    const url = `http://localhost:8080/gbar/find?name=${searchTerm}`;
+
+    try {
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      setChoices((prevChoices) => [...prevChoices, searchTerm]);
+    } catch (error) {
+      console.error("Error adding actor:", error);
+      alert(
+        `"Failed to find actor that name is ${searchTerm}. Please try again with another name.`
+      );
+    }
     setSearchTerm("");
   };
 
-  const handleShowActorScreen = () => {
-    navigate("/gbar/result");
+  const handleResult = async (e) => {
+    e.preventDefault();
+
+    let genrekeys = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    selectedGenres.forEach(function (genre) {
+      genrekeys[genres.findIndex((name) => name === genre)] = 1;
+    });
+
+    const url = `http://localhost:8080/gbar/recommend `;
+    const data = {
+      genre: genrekeys,
+      supporter: choices, //exmaple ["Robert Hays", "John Belushi"]
+      synergy: 20,
+      plot: "",
+    };
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const response = await res.json();
+
+      const dataToSend = { result: response, genres: genres };
+      navigate("/gbar/result", { state: dataToSend });
+    } catch (error) {
+      console.error("Error fetching analysis data:", error);
+      alert("Failed to fetch analysis data. Please try again later.");
+    }
   };
 
   return (
@@ -40,41 +112,11 @@ const Feature2 = () => {
             <div className="w-1/3">
               <h3 className="font-bold mb-2">Genre</h3>
               <div className="border p-4">
-                <button
-                  className={`genre-button bg-gray-200 py-1 px-2 rounded mr-2 mb-2 ${
-                    selectedGenres.includes("Action") ? "active" : ""
-                  }`}
-                  onClick={() => handleGenreToggle("Action")}>
-                  Action
-                </button>
-                <button
-                  className={`genre-button bg-gray-200 py-1 px-2 rounded mr-2 mb-2 ${
-                    selectedGenres.includes("Animation") ? "active" : ""
-                  }`}
-                  onClick={() => handleGenreToggle("Animation")}>
-                  Animation
-                </button>
-                <button
-                  className={`genre-button bg-gray-200 py-1 px-2 rounded mr-2 mb-2 ${
-                    selectedGenres.includes("Thriller") ? "active" : ""
-                  }`}
-                  onClick={() => handleGenreToggle("Thriller")}>
-                  Thriller
-                </button>
-                <button
-                  className={`genre-button bg-gray-200 py-1 px-2 rounded mr-2 mb-2 ${
-                    selectedGenres.includes("Comedy") ? "active" : ""
-                  }`}
-                  onClick={() => handleGenreToggle("Comedy")}>
-                  Comedy
-                </button>
-                <button
-                  className={`genre-button bg-gray-200 py-1 px-2 rounded mr-2 mb-2 ${
-                    selectedGenres.includes("More") ? "active" : ""
-                  }`}
-                  onClick={() => handleGenreToggle("More")}>
-                  More
-                </button>
+                <Feature2GenreSelection
+                  value={selectedGenres}
+                  setValue={setSelectedGenres}
+                  genres={genres}
+                />
               </div>
             </div>
             <div className="w-2/3">
@@ -100,7 +142,7 @@ const Feature2 = () => {
               </div>
               <button
                 className="bg-blue-500 text-white py-2 px-4"
-                onClick={handleShowActorScreen}>
+                onClick={handleResult}>
                 Show me!
               </button>
             </div>
