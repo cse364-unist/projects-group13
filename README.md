@@ -68,7 +68,7 @@ You can just select genres as you want!
 
 You can add some actors for better recommendation.
 
-![feat2](./assets/feature_usage/gbar_example_3.png)
+![feat2](./assets/feature_usage/gbar_example_3_re.png)
 ![feat2](./assets/feature_usage/gbar_example_4.png)
 
 If you add incorrect actor, error occurs.
