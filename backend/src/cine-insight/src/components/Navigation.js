@@ -18,17 +18,17 @@ const Navigation = ({ onFeatureChange }) => {
         <button
           className={`${buttonStyle} ${location.pathname.includes("/pua") ? "bg-gray-400 border-gray-500 text-white" : "bg-white border-white text-gray-800"}`}
           onClick={() => handleFeatureClick("pua")}>
-          Feature 1
+          Preferred User Analysis
         </button>
         <button
           className={`${buttonStyle} ${location.pathname.includes("/gbar") ? "bg-gray-400 border-gray-500 text-white" : "bg-white border-white text-gray-800"}`}
           onClick={() => handleFeatureClick("gbar")}>
-          Feature 2
+          Genre-Based Actor Recommendation
         </button>
         <button
           className={`${buttonStyle} ${location.pathname.includes("/gfa") ? "bg-gray-400 border-gray-500 text-white" : "bg-white border-white text-gray-800"}`}
           onClick={() => handleFeatureClick("gfa")}>
-          Feature 3
+          Genre Frequency Analysis
         </button>
       </div>
     </nav>

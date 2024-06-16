@@ -55,7 +55,7 @@ const Feature3 = () => {
         <div className="bg-gray-100 text-gray-900 font-roboto">
             <main className="container mx-auto py-8 px-4">
                 <section id="feature3" className="mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Feature 3</h2>
+                    <h2 className="text-2xl font-bold mb-4">Genre Frequency Analysis</h2>
                     <section className="mb-6 p-4 bg-blue-100 border border-blue-300 rounded">
                         <h4 className="font-bold mb-2 text-lg text-blue-700">
                             Instructions
