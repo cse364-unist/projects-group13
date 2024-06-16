@@ -36,7 +36,7 @@ Analyze movies with high ratings within a specific genre to determine audience p
 
 1. Select at least 3 genres.
 2. Check the Selected Genres and press the Analysis button.
-3. After waiting a few minutes, you can review the analyzed data!
+3. After waiting for the analysis to complete, you can review the analyzed data at the bottom of the page.
 
 ### Feature 2: Genre-Based Actor Recommendation
 
