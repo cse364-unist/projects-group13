@@ -60,7 +60,7 @@ public class GFAController {
         return ResponseEntity.ok(collectionModel);
     }
     
-    @GetMapping("/{year}")
+    @GetMapping("year/{year}")
     public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingYear(@PathVariable int year) {
         List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingYear(year);
 
@@ -70,6 +70,19 @@ public class GFAController {
     
         CollectionModel<GenreRate> collectionModel = CollectionModel.of(genreRates, link);
     
+        return ResponseEntity.ok(collectionModel);
+    }
+
+    @GetMapping("/year/{year}/genre/{genre}")
+    public ResponseEntity<CollectionModel<GenreRate>> getGenreFrequencyWithRatingsIncludingGenreAndYear(@PathVariable String genre, @PathVariable int year) {
+        List<GenreRate> genreRates = gfaService.getGenreFrequencyWithRatingsIncludingGenreAndYear(genre, year);
+
+        Link link = linkTo(methodOn(GFAController.class)
+                .getGenreFrequencyWithRatingsIncludingGenreAndYear(genre, year))
+                .withSelfRel();
+
+        CollectionModel<GenreRate> collectionModel = CollectionModel.of(genreRates, link);
+
         return ResponseEntity.ok(collectionModel);
     }
 }

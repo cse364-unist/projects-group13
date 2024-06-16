@@ -121,7 +121,7 @@ public class GFAControllerTest {
         when(gfaService.getGenreFrequencyWithRatingsIncludingYear(year)).thenReturn(genreRates);
 
         // Perform the GET request
-        mockMvc.perform(get("/gfa/{year}", year)
+        mockMvc.perform(get("/gfa/year/{year}", year)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -136,7 +136,7 @@ public class GFAControllerTest {
         when(gfaService.getGenreFrequencyWithRatingsIncludingYear(year)).thenReturn(genreRates);
 
         // Perform the GET request
-        mockMvc.perform(get("/gfa/{year}", year)
+        mockMvc.perform(get("/gfa/year/{year}", year)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))

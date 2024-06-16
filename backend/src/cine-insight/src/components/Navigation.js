@@ -26,8 +26,8 @@ const Navigation = ({ onFeatureChange }) => {
           Feature 2
         </button>
         <button
-          className={`${buttonStyle} ${location.pathname.includes("/gfl") ? "bg-gray-400 border-gray-500 text-white" : "bg-white border-white text-gray-800"}`}
-          onClick={() => handleFeatureClick("gfl")}>
+          className={`${buttonStyle} ${location.pathname.includes("/gfa") ? "bg-gray-400 border-gray-500 text-white" : "bg-white border-white text-gray-800"}`}
+          onClick={() => handleFeatureClick("gfa")}>
           Feature 3
         </button>
       </div>

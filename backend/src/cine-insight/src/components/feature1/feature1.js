@@ -3,6 +3,7 @@ import PieChartComponent from "./PieChartComponent";
 import AreaChartComponent from "./AreaChartComponent";
 import BarChartComponent from "./BarChartComponent";
 import GenreSelection from "../selection/genreSelection";
+import Loading from "../Loading";
 
 const Feature1 = () => {
     const [selectedGenres, setSelectedGenres] = useState([]);
@@ -99,8 +100,11 @@ const Feature1 = () => {
                                 className="analysis-button bg-blue-500 text-white py-4 px-8 rounded text-lg font-bold" // 버튼을 크게 만듦
                                 onClick={handleAnalysis}
                                 disabled={loading}
-                            >
-                                {loading ? "Analyzing..." : "Analysis"}
+                            >   
+                                <div className="inline-flex items-center text-center justify-center space-x-3">
+                                    {loading && <Loading />}
+                                    {loading ? <span>Analyzing...</span> : <span>Analysis</span>}
+                                </div>
                             </button>
                         </div>
                     </div>

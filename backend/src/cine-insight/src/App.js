@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<Main />}></Route>
           <Route path="/pua" element={<Feature1 />}></Route>
           <Route path="/gbar" element={<Feature2 />}></Route>
-          <Route path="/gfl" element={<Feature3 />}></Route>
+          <Route path="/gfa" element={<Feature3 />}></Route>
           <Route path="/gbar/result" element={<Feature2Actor />}></Route>
         </Routes>
       </BrowserRouter>

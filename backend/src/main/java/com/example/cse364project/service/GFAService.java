@@ -182,6 +182,58 @@ public class GFAService {
 
         return result;
     }
+
+    /**
+     * The function `getGenreFrequencyWithRatingsIncludingGenreAndYear` calculates the average rating
+     * and frequency of movies by genre and year, sorting the results based on frequency, average rating,
+     * length, and lexicographical order.
+     * 
+     * @param genre The method `getGenreFrequencyWithRatingsIncludingGenreAndYear` takes a genre as input
+     * and retrieves a list of `GenreRate` objects that include the average rating and frequency of movies
+     * in that genre. The method first fetches a list of `MovieRate` objects with average ratings for the
+     * specified genre.
+     * @param year The method `getGenreFrequencyWithRatingsIncludingGenreAndYear` takes a year as input and
+     * retrieves a list of `GenreRate` objects that include the average rating and frequency of movies
+     * released in that year. The method first fetches a list of `MovieRate` objects with average ratings
+     * for the specified year.
+     * @return The method `getGenreFrequencyWithRatingsIncludingGenreAndYear` returns a list of `GenreRate`
+     * objects, which represent the average rating and frequency of movies in a specific genre and year,
+     * including the specified genre and year. The list is sorted based on frequency, average rating, length,
+     * and lexicographical order.
+     */
+    public List<GenreRate> getGenreFrequencyWithRatingsIncludingGenreAndYear(String genre, int year) {
+        Map<Genres, Pair<Double, Integer>> genreCombinationRatings = new HashMap<>();
+        List<GenreRate> result = new ArrayList<>();
+
+        List<MovieRate> moviesWithAverageRating = movieRatingRepository.findMoviesWithAverageRatingByGenreAndYear(genre, year);
+
+        // Simply count
+        for (MovieRate movieRate : moviesWithAverageRating) {
+            Genres genres = getGenresByMovieId(movieRate.getMovieId());
+            Pair<Double, Integer> value = genreCombinationRatings.getOrDefault(genres, Pair.of(0.0, 0));
+             
+            double sumOfAverageRating = value.getFirst() + movieRate.getAverageRating();
+            int count = value.getSecond() + 1;
+
+            Pair<Double, Integer> newValue = Pair.of(sumOfAverageRating, count);
+            genreCombinationRatings.put(genres, newValue);
+        }
+
+        // Change map to list
+        for (Map.Entry<Genres, Pair<Double, Integer>> entry : genreCombinationRatings.entrySet()) {
+            double sumRate = entry.getValue().getFirst();
+            int frequency = entry.getValue().getSecond();
+            if (frequency == 0) continue;
+            double avgRate = sumRate / frequency;
+            result.add(new GenreRate(entry.getKey(), avgRate, frequency));
+        }
+
+        // Sort it
+        // Frequency -> Average Rating -> Length -> Lexicographical
+        Collections.sort(result, customcomparator);
+
+        return result;
+    }
  
     /**
      * This function retrieves the genres of a movie by its ID from a movie repository.
