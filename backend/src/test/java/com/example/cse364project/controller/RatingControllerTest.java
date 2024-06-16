@@ -51,8 +51,7 @@ class RatingControllerTest {
         // Assert
         mockMvc.perform(get("/ratings/{rating}", rating))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()))
-                .andDo(print());
+                .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()));
 
         verify(movieRatingRepository, times(1)).findMoviesWithGTEAverageRating(eq(rating));
     }
@@ -70,8 +69,7 @@ class RatingControllerTest {
         mockMvc.perform(get("/ratings/{rating}", rating)
                     .param("year", "2021"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()))
-                .andDo(print());
+                .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()));
 
         verify(movieRatingRepository, times(1)).findMoviesWithGTEAverageRatingAndYear(eq(rating), eq(year));
     }
@@ -88,8 +86,7 @@ class RatingControllerTest {
         mockMvc.perform(get("/ratings/{rating}", rating)
                     .param("genre", "Action", "Thriller"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()))
-                .andDo(print());
+                .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()));
 
         verify(movieRatingRepository, times(1)).findMoviesWithGTEAverageRatingAndGenres(eq(rating), eq(genre));
     }
@@ -109,8 +106,7 @@ class RatingControllerTest {
                     .param("genre", "Action", "Thriller")
                     .param("year", "2021"))
                 .andExpect(jsonPath("$.content[0].id").value(movies.get(0).getId()))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(movieRatingRepository, times(1)).findMoviesWithGTEAverageRatingAndGenreAndYear(eq(rating), eq(genre), eq(year));
     }
@@ -126,8 +122,7 @@ class RatingControllerTest {
         // Assert
         mockMvc.perform(get("/ratings/id/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(rating.getId()))
-                .andDo(print());
+                .andExpect(jsonPath("$.id").value(rating.getId()));
 
         verify(ratingService, times(1)).getRatingById(eq(id));
     }
@@ -139,8 +134,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(get("/ratings/{rating}", rating))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -150,8 +144,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(get("/ratings/{rating}", rating))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
 
@@ -167,8 +160,7 @@ class RatingControllerTest {
                     .contentType("application/json")
                     .content("{\"id\": \"1\",\"movieId\":\"1\",\"userId\":\"1\",\"rate\":4,\"timestamp\":\"20324\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(rating.getId()))
-                .andDo(print());
+                .andExpect(jsonPath("$.id").value(rating.getId()));
 
         verify(ratingService, times(1)).addRating(eq(rating));
     }
@@ -184,8 +176,7 @@ class RatingControllerTest {
         mockMvc.perform(post("/ratings")
                     .contentType("application/json")
                     .content("{\"id\": \"2\", \"movieId\":\"2\",\"userId\":\"1\",\"rate\":4,\"timestamp\":\"20324\"}"))
-                .andExpect(status().isCreated())
-                .andDo(print());
+                .andExpect(status().isCreated());
 
         verify(ratingService, times(1)).addRating(eq(rating));
     }
@@ -202,8 +193,7 @@ class RatingControllerTest {
         mockMvc.perform(put("/ratings/id/{id}", id)
                     .contentType("application/json")
                     .content("{\"movieId\":\"1\",\"userId\":\"1\",\"rate\":4,\"timestamp\":\"20324\"}"))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).updateRating(eq(id), eq(rating));
     }
@@ -220,8 +210,7 @@ class RatingControllerTest {
         mockMvc.perform(put("/ratings/id/{id}", id)
                     .contentType("application/json")
                     .content("{\"movieId\":\"2\",\"userId\":\"1\",\"rate\":4,\"timestamp\":\"20324\"}"))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).updateRating(eq(id), eq(rating));
     }
@@ -233,8 +222,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(delete("/ratings/id/{id}", id))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andExpect(status().isNoContent());
 
         verify(ratingService, times(1)).deleteRating(eq(id));
     }
@@ -246,8 +234,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(delete("/ratings/id/{id}", id))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andExpect(status().isNoContent());
 
         verify(ratingService, times(1)).deleteRating(eq(id));
     }
@@ -264,8 +251,7 @@ class RatingControllerTest {
         mockMvc.perform(patch("/ratings/id/{id}", id)
                     .contentType("application/json")
                     .content("{\"rate\":4}"))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).patchRating(eq(id), any(Rating.class));
     }
@@ -282,8 +268,7 @@ class RatingControllerTest {
         mockMvc.perform(patch("/ratings/id/{id}", id)
                     .contentType("application/json")
                     .content("{\"rate\":4}"))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).patchRating(eq(id), any(Rating.class));
     }
@@ -298,8 +283,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(get("/ratings/movie/{movieId}", movieId))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).getRatingsByMovieId(eq(movieId));
     }
@@ -314,8 +298,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(get("/ratings/movie/{movieId}", movieId))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).getRatingsByMovieId(eq(movieId));
     }
@@ -330,8 +313,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(get("/ratings/user/{userId}", userId))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).getRatingsByUserId(eq(userId));
     }
@@ -346,8 +328,7 @@ class RatingControllerTest {
 
         // Assert
         mockMvc.perform(get("/ratings/user/{userId}", userId))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(ratingService, times(1)).getRatingsByUserId(eq(userId));
     }

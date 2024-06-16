@@ -39,7 +39,7 @@ RUN chmod +x /root/project/run.sh
 
 EXPOSE 27017
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "./run.sh"]
 
 # Set github token for environment variable. Please be careful not to leak the API key.
 # ENV GITHUB_TOKEN={OUR_PUBLIC_API_TOKEN}

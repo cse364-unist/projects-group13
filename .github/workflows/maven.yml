@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "milestone3" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "milestone3" ]
 
 jobs:
   build:
@@ -21,6 +21,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -29,4 +34,4 @@ jobs:
         cache: maven
     - name: Build with Maven
       working-directory: backend
-      run: mvn -B package --file pom.xml
+      run: mvn -B -X package --file pom.xml
