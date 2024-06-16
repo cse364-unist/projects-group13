@@ -48,14 +48,14 @@ You can use this GBAR when planning movies or can use if you want more actors th
 
 **How to Use This Feature?:**
 
-[![Feature 2 Explanation Video Link](https://img.youtube.com/vi/ZJVVDZ5D5NRAbxYo/0.jpg)](https://youtu.be/F6PJlZeC8r0?si=ZJVVDZ5D5NRAbxYo)
+[![Feature 2 Explanation Video Link](https://img.youtube.com/vi/F6PJlZeC8r0/0.jpg)](https://www.youtube.com/watch?v=F6PJlZeC8r0)
 
 1. Select every genres you want. You can check as many as you want!
 2. Insert actor and click add button. (not essential, for better recommendation!)
-   2-1 This actor can be supporter of star or synerging actor.
-   2-2 You can add more actors if you want!
-   2-3 If incorrect actor name is inserted, you can see error message.
-   2-4 If same actor name is inserted, you also can see error message.
+   1. This actor can be supporter of star or synerging actor.
+   2. You can add more actors if you want!
+   3. If incorrect actor name is inserted, you can see error message.
+   4. If same actor name is inserted, you also can see error message.
 3. Check your job and just click "Show me" button!
 4. You can get 5 recommendations and statistics page!
 
