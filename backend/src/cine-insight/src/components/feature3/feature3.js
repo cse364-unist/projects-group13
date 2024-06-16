@@ -17,7 +17,7 @@ const Feature3 = () => {
         e.preventDefault();
 
         setIsLoading(true);
-        let defaultLink = "/api/gfa";
+        let defaultLink = "http://localhost:8080/gfa";
         defaultLink += `/year/${selectedYear}`;
         defaultLink +=
             selectedGenres.length > 0 ? `/genre/${selectedGenres[0]}` : "";

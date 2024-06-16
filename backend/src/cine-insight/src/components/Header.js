@@ -20,9 +20,7 @@ const Header = () => {
                     </Textbox>
                 </div>
                 <p className="text-center mt-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Quisque ultrices augue vitae fermentum egestas. Ut in leo
-                    sem.
+                    The tool for movie lovers and directors
                 </p>
             </div>
         </header>
