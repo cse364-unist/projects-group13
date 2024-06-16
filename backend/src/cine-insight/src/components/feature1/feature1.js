@@ -77,8 +77,8 @@ const Feature1 = () => {
                     <div>
                         <h3 className="font-bold mb-2">Genre</h3>
                         <GenreSelection
-                            selectedGenres={selectedGenres}
-                            setSelectedGenres={setSelectedGenres}
+                            value={selectedGenres}
+                            setValue={setSelectedGenres}
                         />
                     </div>
                     <div className="flex mt-4 justify-between">

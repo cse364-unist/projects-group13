@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GenreSelection from "../selection/genreSelection";
+import YearSelector from "../selection/yearSelection";
 
 const Feature3 = () => {
 
@@ -7,10 +8,7 @@ const Feature3 = () => {
     const maxYear = new Date().getFullYear();
 
     const [selectedYear, setSelectedYear] = useState(maxYear + "");
-
-    const handleYearChange = (event) => {
-        setSelectedYear(event.target.value);
-    };
+    const [selectedGenres, setSelectedGenres] = useState([]);
 
     return (
         <div className="bg-gray-100 text-gray-900 font-roboto">
@@ -20,25 +18,17 @@ const Feature3 = () => {
                     <div className="flex">
                         <div className="w-1/3 p-2 space-y-2">
                             <h3 className="font-bold mb-2">Select Year</h3>
-                            <select
-                                className="border p-2 w-full"
+                            <YearSelector
                                 value={selectedYear}
-                                onChange={handleYearChange}
-                            >
-                                {Array.from(
-                                    { length: maxYear - minYear + 1 },
-                                    (_, i) => (
-                                        <option key={i} value={maxYear - i}>
-                                            {maxYear - i}
-                                        </option>
-                                    )
-                                )}
-                            </select>
+                                setValue={setSelectedYear}
+                                minYear={minYear}
+                                maxYear={maxYear}
+                            />
                             <h3 className="font-bold mb-2">Select Genre</h3>
-                            <GenreSelection 
-                                selectedGenres={[]} 
-                                setSelectedGenres={() => {}} 
-                                isSingle={false}
+                            <GenreSelection
+                                value={selectedGenres}
+                                setValue={setSelectedGenres}
+                                isSingle={true}
                             />
                         </div>
                         <div className="w-2/3">
