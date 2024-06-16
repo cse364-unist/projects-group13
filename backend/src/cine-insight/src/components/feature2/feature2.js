@@ -38,6 +38,13 @@ const Feature2 = () => {
   const handleAddChoice = async (e) => {
     e.preventDefault();
 
+    if (choices.includes(searchTerm)) {
+      setSearchTerm("");
+
+      alert(`"Same actor inserted. Please try again with another name.`);
+      return;
+    }
+
     const url = `http://localhost:8080/gbar/find?name=${searchTerm}`;
 
     try {
